@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.simon.cis.vo.ReservationMapper">
+	<resultMap id="reservationVOResultMap" type="reservationVO">
+		<id property="id" column="id" /> 
+		<result property="date" column="date" />
+		<result property="customerId" column="customer_id" />
+		<result property="shopTime" column="shop_time" javaType="String" />
+		<result property="antiShopTime" column="anti_shop_time" javaType="String" />
+		<result property="antiShopRemindTime" column="anti_shop_remind_time" javaType="String" />
+		<result property="mark" column="mark" />
+		<association property="customerVO" column="customer_id" javaType="com.simon.cis.vo.CustomerVO">
+			<result property="name" column="name" />
+			<result property="phone" column="phone" />
+		</association>
+	</resultMap>
+	
+	<select id="findAllReservation" resultMap="reservationVOResultMap">
+		select 
+			tr.id, 
+			tr.date,
+			tr.customer_id,
+			tr.shop_time,
+			tr.anti_shop_time,
+			tr.anti_shop_remind_time,
+			tr.mark,
+			tc.name,
+			tc.phone
+		from t_reservation tr
+			left outer join t_customer tc 
+			on tr.customer_id = tc.id
+		order by tr.id desc
+	</select>
+	
+	<insert id="insertReservation" parameterType="reservationVO" useGeneratedKeys="true" keyProperty="id">
+		insert into t_reservation (
+			date,
+			customer_id,
+			shop_time,
+			anti_shop_time,
+			anti_shop_remind_time,
+			mark
+		) values (
+			#{date},
+			#{customerId},
+			#{shopTime},
+			#{antiShopTime},
+			#{antiShopRemindTime},
+			#{mark}
+		)
+	</insert>
+	
+	<select id="findById" parameterType="int" resultMap="reservationVOResultMap">
+		select 
+			tr.id, 
+			tr.date,
+			tr.customer_id,
+			tr.shop_time,
+			tr.anti_shop_time,
+			tr.anti_shop_remind_time,
+			tr.mark
+		from t_reservation tr
+		where tr.id = #{id}
+		order by tr.id desc
+	</select>
+	
+	<update id="updateReservation" parameterType="reservationVO">
+		update t_reservation 
+		   set date = #{date},
+		   	   customer_id = #{customerId},
+		   	   shop_time = #{shopTime},
+			   anti_shop_time = #{antiShopTime},
+			   anti_shop_remind_time = #{antiShopRemindTime},
+			   mark = #{mark}
+		 where id = #{id}
+	</update>
+</mapper>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.simon.cis.vo.EmployeeMapper">
+	<resultMap id="employeeVOResultMap" type="employeeVO"> 
+        <id property="id" column="id" javaType="int" /> 
+        <result property="name" column="name" javaType="String" /> 
+        <result property="age" column="age" javaType="String" /> 
+        <result property="sex" column="sex" javaType="String" /> 
+        <result property="phone" column="phone" javaType="String" /> 
+        <result property="number" column="number" javaType="String" /> 
+        <result property="qq" column="qq" javaType="String" />
+        <result property="email" column="email" javaType="String" />
+        <result property="address" column="address" javaType="String" />
+        <result property="status" column="status" javaType="String" />
+        <result property="entryDate" column="entry_date" javaType="String" />
+        <result property="departureDate" column="departure_date" javaType="String" />
+    </resultMap>
+	
+	<insert id="insertEmployee" parameterType="employeeVO" useGeneratedKeys="true" keyProperty="id">
+		insert into t_employee (
+			name,
+			age,
+			sex,
+			phone,
+			number,
+			qq,
+			email,
+			address,
+			status,
+			entry_date,
+			departure_date,
+			isdelete
+		)
+  		values (
+  			#{name},
+  			#{age},
+  			#{sex},
+  			#{phone},
+  			#{number},
+  			#{qq},
+  			#{email},
+  			#{address},
+  			#{status},
+  			#{entryDate},
+  			nullif(#{departureDate},''),
+  			#{isDelete}
+  		)
+	</insert>
+	
+	<select id="findAllEmployee" resultMap="employeeVOResultMap">
+		select id, name, phone, number, qq, email, status, entry_date, departure_date, departure_date from t_employee 
+		where isdelete='N'
+		order by id desc
+	</select>
+	
+	<select id="findById" parameterType="int" resultMap="employeeVOResultMap">
+		select id, name, age, sex, phone, number, qq, email, address, status, entry_date, departure_date from t_employee
+		where id=#{id}
+	</select>
+	
+	<update id="updateEmployee" parameterType="employeeVO">
+		update t_employee set age=#{age}, sex=#{sex}, phone=#{phone}, number=#{number}, qq=#{qq}, email=#{email}, 
+							  address=#{email}, status=#{status}, entry_date=#{entryDate}, departure_date=#{departureDate}
+		where id=#{id}
+	</update>
+	
+	<update id="deleteOneEmployee" parameterType="int">
+		update t_employee set isdelete='Y' where id=#{id} 
+	</update>
+	
+	<select id="findByKeyword" parameterType="string" resultMap="employeeVOResultMap">
+		select id, name, phone, number, qq, email, status, entry_date, departure_date from t_employee
+		where 1=1
+		<if test="_parameter != null">
+			and name like CONCAT('%',#{name},'%') 
+		</if>
+		and isdelete='N'
+		order by id desc
+	</select>
+</mapper>

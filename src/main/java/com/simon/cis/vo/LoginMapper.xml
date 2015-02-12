@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.simon.cis.vo.LoginMapper">
+	
+	<select id="queryLoginInfo" parameterType="loginVO" resultType="loginVO">
+		select name, pwd from t_account where name=#{username} and pwd=#{pwd}
+	</select>
+</mapper>

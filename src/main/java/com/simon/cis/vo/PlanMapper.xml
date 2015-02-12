@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.simon.cis.vo.PlanMapper">
+	<resultMap id="planVOResultMap" type="planVO">
+		<id property="id" column="id" /> 
+		<result property="name" column="name" />
+		<result property="price" column="price" />
+		<collection property="planItemList" column="item_id" ofType="planItemVO">
+            <id property="id" column="piid"/>  
+            <result property="planId" column="plan_id"/>  
+            <result property="itemId" column="item_id"/>  
+		</collection>
+	</resultMap>
+	
+	<select id="findAllPlan" resultMap="planVOResultMap">
+		select 
+			id, 
+			name,
+			price
+		from t_plan 
+		where isdelete='N'
+		order by id desc
+	</select>
+	
+	<insert id="insertPlan" parameterType="planVO" useGeneratedKeys="true" keyProperty="id">
+		insert into t_plan (
+			name,
+			price,
+			isdelete
+		) values (
+			#{name},
+			#{price},
+			#{isDelete}
+		)
+	</insert>
+	
+	<select id="findById" parameterType="int" resultMap="planVOResultMap">
+		select 
+			p.id, 
+			p.name,
+			p.price,
+			pi.id as piid,
+			pi.plan_id,
+			pi.item_id
+		from t_plan p
+		left join t_plan_item pi on p.id = pi.plan_id
+		where p.id=#{id}
+	</select>
+	
+	<update id="updatePlan" parameterType="planVO">
+		update t_plan 
+		set name=#{name},
+			price=#{price}
+		 where id=#{id}
+	</update>
+	
+	<update id="deleteOnePlan" parameterType="int">
+		update t_plan set isdelete='Y' where id=#{id}
+	</update>
+	
+	<insert id="insertPlanItems">
+		insert into t_plan_item (
+			plan_id,
+			item_id
+		) value 
+		<foreach collection="list" item="item" index="index" separator=",">
+		(
+			#{item.planId},
+			#{item.itemId}
+		)
+		</foreach>
+	</insert>
+	
+	<delete id="deletePlanItem">
+		delete from t_plan_item where plan_id=#{id}
+	</delete>
+</mapper>

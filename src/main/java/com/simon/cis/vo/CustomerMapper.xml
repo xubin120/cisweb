@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.simon.cis.vo.CustomerMapper">
+	<resultMap id="customerVOResultMap" type="customerVO"> 
+        <id property="id" column="id" javaType="int" /> 
+        <result property="name" column="name" javaType="String" /> 
+        <result property="age" column="age" javaType="String" /> 
+        <result property="sex" column="sex" javaType="String" /> 
+        <result property="homeTown" column="home_town" javaType="String" /> 
+        <result property="phone" column="phone" javaType="String" /> 
+        <result property="birthday" column="birthday" javaType="String" />
+        <result property="profession" column="profession" javaType="String" />
+        <result property="bloodType" column="blood_type" javaType="String" />
+        <result property="constellation" column="constellation" javaType="String" />
+        <result property="assets" column="assets" javaType="String" />
+        <result property="membershipDate" column="membership_date" javaType="String" />
+        <result property="customerType" column="customer_type" javaType="String" />
+        <result property="isDelete" column="isdelete" javaType="String" />
+    </resultMap>
+    
+    <resultMap id="customerVOEditResultMap" type="customerVO"> 
+        <id property="id" column="id" javaType="int" /> 
+        <result property="name" column="name" javaType="String" /> 
+        <result property="age" column="age" javaType="String" /> 
+        <result property="sex" column="sex" javaType="String" /> 
+        <result property="homeTown" column="home_town" javaType="String" /> 
+        <result property="phone" column="phone" javaType="String" /> 
+        <result property="birthday" column="birthday" javaType="String" />
+        <result property="profession" column="profession" javaType="String" />
+        <result property="bloodType" column="blood_type" javaType="String" />
+        <result property="constellation" column="constellation" javaType="String" />
+        <result property="assets" column="assets" javaType="String" />
+        <result property="membershipDate" column="membership_date" javaType="String" />
+        <result property="customerType" column="customer_type" javaType="String" />
+        <collection property="customerInfo" column="customer_info_id" ofType="customerInfoVO">
+        	<!-- <id property="id" column="id" javaType="int"/> -->
+        	<result property="customerId" column="customer_id" />
+        	<result property="childrenSex" column="children_sex" javaType="String"/>
+        	<result property="childrenAge" column="children_age" javaType="String"/>
+        	<result property="spouseProfession" column="spouse_profession" javaType="String"/>
+        	<result property="couples" column="couples" javaType="String"/>
+        	<result property="disposition" column="disposition" javaType="String"/>
+        	<result property="hobby" column="hobby" javaType="String"/>
+        	<result property="praise" column="praise" javaType="String"/>
+        	<result property="homeAssets" column="home_assets" javaType="String"/>
+        	<result property="consumerAwareness" column="consumer_awareness" javaType="String"/>
+        	<result property="maintenanceAwareness" column="maintenance_awareness" javaType="String"/>
+        	<result property="cosmetology" column="cosmetology" javaType="String"/>
+        	<result property="family" column="family" javaType="String"/>
+        	<result property="facial" column="facial" javaType="String"/>
+        	<result property="body" column="body" javaType="String"/>
+        	<result property="requirement" column="requirement" javaType="String"/>
+        	<result property="beauticianRequest" column="beautician_request" javaType="String"/>
+        	<result property="trust" column="trust" javaType="String"/>
+        	<result property="trustReason" column="trust_reason" javaType="String"/>
+        </collection>
+    </resultMap>
+        
+	<insert id="insertCustomer" parameterType="CustomerVO" useGeneratedKeys="true" keyProperty="id">
+		insert into t_customer (
+			name,
+			age,
+			sex,
+			home_town,
+			phone,
+			birthday,
+			profession,
+			blood_type,
+			constellation,
+			assets,
+			membership_date,
+			customer_type,
+			isdelete
+		)
+  		values (
+  			#{name},
+  			#{age},
+  			#{sex},
+  			#{homeTown},
+  			#{phone},
+  			#{birthday},
+  			#{profession},
+  			#{bloodType},
+  			#{constellation},
+  			#{assets},
+  			#{membershipDate},
+  			#{customerType},
+  			#{isDelete}
+  		)
+	</insert>
+	
+	<select id="findAllCustomer" resultMap="customerVOResultMap">
+		select 
+			id, 
+			name, 
+			age, 
+			sex, 
+			phone, 
+			home_town, 
+			profession, 
+			birthday, 
+			membership_date, 
+			customer_type 
+		from t_customer 
+		where isdelete='N'
+		order by id desc
+	</select>
+	
+	<select id="findById" parameterType="int" resultMap="customerVOEditResultMap">
+		select 
+			c.id, 
+			c.name, 
+			c.age, 
+			c.sex, 
+			c.phone, 
+			c.home_town, 
+			c.profession, 
+			c.blood_type, 
+			c.constellation, 
+			c.assets, 
+			c.birthday, 
+			c.membership_date, 
+			c.customer_type,
+			c.isdelete,
+			ci.customer_id,
+			ci.children_sex, 
+			ci.children_age,
+			ci.spouse_profession,
+			ci.couples,
+			ci.disposition,
+			ci.hobby,
+			ci.praise,
+			ci.home_assets,
+			ci.consumer_awareness,
+			ci.maintenance_awareness,
+			ci.cosmetology,
+			ci.family,
+			ci.facial,
+			ci.body,
+			ci.requirement,
+			ci.beautician_request,
+			ci.trust,
+			ci.trust_reason
+		from t_customer c 
+			left outer join t_customer_info ci 
+			on c.id = ci.customer_id 
+		where c.id=#{id}
+	</select>
+	
+	<update id="updateCustomer" parameterType="customerVO">
+		update t_customer 
+		   set 
+		   	   name=#{name},
+		   	   age=#{age}, 
+		   	   sex=#{sex}, 
+		   	   home_town=#{homeTown}, 
+		   	   phone=#{phone}, 
+		   	   birthday=#{birthday}, 
+			   profession=#{profession}, 
+			   blood_type=#{bloodType}, 
+			   constellation=#{constellation}, 
+			   assets=#{assets},
+			   membership_date=#{membershipDate},
+			   customer_type=#{customerType}
+		where id=#{id}
+	</update>
+	
+	<update id="updateCustomerInfo" parameterType="customerInfoVO">
+		update t_customer_info
+		   set 
+		   	   customer_id=#{customerId},
+		       children_sex=#{childrenSex},
+		       children_age=#{childrenAge},
+		       spouse_profession=#{spouseProfession},
+		       couples=#{couples},
+		       disposition=#{disposition},
+		       hobby=#{hobby},
+		       praise=#{praise},
+		       home_assets=#{homeAssets},
+		       consumer_awareness=#{consumerAwareness},
+		       maintenance_awareness=#{maintenanceAwareness},
+		       cosmetology=#{cosmetology},
+		       family=#{family},
+		       facial=#{facial},
+		       body=#{body},
+		       requirement=#{requirement},
+		       beautician_request=#{beauticianRequest},
+		       trust=#{trust},
+		       trust_reason=#{trustReason}
+		 where
+		 	   customer_id=#{customerId}
+	</update>
+	
+	<insert id="insertCustomerInfo" parameterType="customerInfoVO" useGeneratedKeys="true" keyProperty="id">
+		insert into t_customer_info (
+			customer_id,
+			children_sex,
+			children_age,
+			spouse_profession,
+			couples,
+			disposition,
+			hobby,
+			praise,
+			home_assets,
+			consumer_awareness,
+			maintenance_awareness,
+			cosmetology,
+			family,
+			facial,
+			body,
+			requirement,
+			beautician_request,
+			trust,
+			trust_reason
+		) values (
+			#{customerId},
+			#{childrenSex},
+			#{childrenAge},
+			#{spouseProfession},
+			#{couples},
+			#{disposition},
+			#{hobby},
+			#{praise},
+			#{homeAssets},
+			#{consumerAwareness},
+			#{maintenanceAwareness},
+			#{cosmetology},
+			#{family},
+			#{facial},
+			#{body},
+			#{requirement},
+			#{beauticianRequest},
+			#{trust},
+			#{trustReason}
+		)
+	</insert>
+	
+	<update id="deleteOneCustomer" parameterType="int">
+		update t_customer set isdelete='Y' where id=#{id} 
+	</update>
+	
+	<select id="findByKeyword" parameterType="string" resultMap="customerVOResultMap">
+		select id, name, phone, number, qq, email, status, entry_date, departure_date from t_customer
+		where 1=1
+		<if test="_parameter != null">
+			and name like CONCAT('%',#{name},'%') 
+		</if>
+		and isdelete='N'
+		order by id desc
+	</select>
+</mapper>

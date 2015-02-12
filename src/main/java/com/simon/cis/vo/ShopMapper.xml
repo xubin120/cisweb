@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.simon.cis.vo.ShopMapper">
+	<resultMap id="shopVOResultMap" type="shopVO">
+		<id property="id" column="id" /> 
+		<result property="arrivalTime" column="arrival_time" />
+		<result property="room" column="room" />
+		<result property="hours" column="hours" javaType="int" />
+		<result property="customerId" column="customer_id" />
+		<result property="employeeId" column="employee_id" />
+		<result property="activityId" column="activity_id" />
+		<result property="planId" column="plan_id" />
+		<result property="itemId" column="item_id" />
+		<association property="customerVO" column="customer_id" javaType="com.simon.cis.vo.CustomerVO">
+			<result property="name" column="cname" />
+		</association>
+		<association property="employeeVO" column="employee_id" javaType="com.simon.cis.vo.EmployeeVO">
+			<result property="name" column="ename" />
+		</association>
+		<association property="activityVO" column="activity_id" javaType="com.simon.cis.vo.ActivityVO">
+			<result property="name" column="aname" />
+		</association>
+		<association property="planVO" column="plan_id" javaType="com.simon.cis.vo.PlanVO">
+			<result property="name" column="pname" />
+		</association>
+		<association property="itemVO" column="item_id" javaType="com.simon.cis.vo.ItemVO">
+			<result property="name" column="iname" />
+		</association>
+	</resultMap>
+	
+	<resultMap id="editShopResultMap" type="shopVO">
+		<id property="id" column="id" />
+		<result property="arrivalTime" column="arrival_time" />
+		<result property="room" column="room" />
+		<result property="hours" column="hours" javaType="int" />
+		<result property="content" column="content" />
+		<result property="response" column="response" />
+		<result property="customerId" column="customer_id" />
+		<result property="employeeId" column="employee_id" />
+		<result property="activityId" column="activity_id" />
+		<result property="planId" column="plan_id" />
+		<result property="itemId" column="item_id" />
+	</resultMap>
+	
+	<select id="findAllShop" resultMap="shopVOResultMap">
+		SELECT 
+			ts.id, 
+			ts.arrival_time, 
+			ts.room,
+			ts.hours,
+			ts.customer_id,
+			tc.`name` as cname, 
+			te.`name` as ename,				
+			ta.`name` as aname, 
+			tp.`name` as pname,
+			ti.`name` as iname
+		from t_shop ts 
+		LEFT OUTER JOIN t_customer tc ON ts.customer_id = tc.id
+		LEFT OUTER JOIN t_employee te ON ts.employee_id = te.id
+		LEFT OUTER JOIN t_activity ta ON ts.activity_id = ta.id
+		LEFT OUTER JOIN t_plan tp ON ts.plan_id = tp.id
+		LEFT OUTER JOIN t_item ti ON ts.item_id = ti.id
+		order by ts.id desc
+	</select>
+	
+	<insert id="insertShop" parameterType="shopVO" useGeneratedKeys="true" keyProperty="id">
+		insert into t_shop (
+			arrival_time,
+			room,
+			hours,
+			content,
+			response,
+			customer_id,
+			employee_id,
+			activity_id,
+			plan_id,
+			item_id
+		) values (
+			#{arrivalTime},
+			#{room},
+			#{hours},
+			#{content},
+			#{response},
+			#{customerId},
+			#{employeeId},
+			#{activityId},
+			#{planId},
+			#{itemId}
+		)
+	</insert>
+	
+	<select id="findById" parameterType="int" resultMap="editShopResultMap">
+		select 
+			id, 
+			arrival_time,
+			room,
+			hours,
+			content,
+			response,
+			customer_id,
+			employee_id,
+			activity_id,
+			plan_id,
+			item_id
+		from t_shop
+		where id = #{id}
+		order by id desc
+	</select>
+	
+	<update id="updateShop" parameterType="shopVO">
+		update t_reservation 
+		   set date = #{date},
+		   	   customer_id = #{customerId},
+		   	   shop_time = #{shopTime},
+			   anti_shop_time = #{antiShopTime},
+			   anti_shop_remind_time = #{antiShopRemindTime},
+			   mark = #{mark}
+		 where id = #{id}
+	</update>
+</mapper>

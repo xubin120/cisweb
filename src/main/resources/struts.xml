@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+    "http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+    <constant name="struts.enable.DynamicMethodInvocation" value="false" />
+    <constant name="struts.devMode" value="false" />
+
+    <package name="cis" namespace="/" extends="struts-default">
+    
+    	<!-- login -->
+        <action name="login" class="loginAction">
+			<result name="success" type="json">login.jsp</result>
+			<result name="error">login.jsp</result>
+		</action>
+		
+		<action name="toMainPage" class="loginAction" method="toMainPage">
+			<result name="success">pages/main.jsp</result>
+		</action>
+		
+		<!-- shop -->
+		<action name="findAllShop" class="shopAction">
+			<result name="success">pages/shop-list.jsp</result>
+			<result name="error">pages/error.jsp</result>
+		</action>
+		
+		<action name="addShop" class="shopAction" method="add">
+			<result name="success" type="redirect">findAllShop</result>
+			<result name="error">pages/error.jsp</result>
+		</action>
+		
+		<action name="preAddShop" class="shopAction" method="preAdd">
+			<result name="success">pages/shop-add.jsp</result>
+		</action>
+		
+		<action name="editShop" class="shopAction" method="edit">
+			<result name="success" type="redirect">findAllShop</result>
+			<result name="error">pages/error.jsp</result>
+		</action>
+		
+		<action name="preEditShop" class="shopAction" method="preEdit">
+			<result name="success">pages/shop-edit.jsp</result>
+		</action>
+		
+		<!-- reservation -->
+		<action name="findAllReservation" class="reservationAction">
+			<result name="success">pages/reservation-list.jsp</result>
+			<result name="error">pages/error.jsp</result>
+		</action>
+		
+		<action name="addReservation" class="reservationAction" method="add">
+			<result name="success" type="redirect">findAllReservation</result>
+			<result name="error">pages/error.jsp</result>
+		</action>
+		
+		<action name="preAddReservation" class="reservationAction" method="preAdd">
+			<result name="success">pages/reservation-add.jsp</result>
+		</action>
+		
+		<action name="editReservation" class="reservationAction" method="edit">
+			<result name="success" type="redirect">findAllReservation</result>
+			<result name="error">pages/error.jsp</result>
+		</action>
+		
+		<action name="preEditReservation" class="reservationAction" method="preEdit">
+			<result name="success">pages/reservation-edit.jsp</result>
+		</action>
+		
+		<!-- plan -->
+		<action name="findAllPlan" class="planAction">
+			<result name="success">pages/plan-list.jsp</result>
+			<result name="error">pages/error.jsp</result>
+		</action>
+		
+		<action name="addPlan" class="planAction" method="add">
+			<result name="success" type="redirect">findAllPlan</result>
+			<result name="error">pages/error.jsp</result>
+		</action>
+		
+		<action name="preAddPlan" class="planAction" method="preAdd">
+			<result name="success">pages/plan-add.jsp</result>
+		</action>
+		
+		<action name="editPlan" class="planAction" method="edit">
+			<result name="success" type="redirect">findAllPlan</result>
+			<result name="error">pages/error.jsp</result>
+		</action>
+		
+		<action name="preEditPlan" class="planAction" method="preEdit">
+			<result name="success">pages/plan-edit.jsp</result>
+		</action>
+		
+		<action name="deletePlan" class="planAction" method="delete">
+			<result name="success" type="redirect">findAllPlan</result>
+			<result name="error">pages/error.jsp</result>
+		</action>
+		
+		<!-- activity -->
+		<action name="findAllActivity" class="activityAction">
+			<result name="success">pages/activity-list.jsp</result>
+			<result name="error">pages/error.jsp</result>
+		</action>
+		
+		<action name="addActivity" class="activityAction" method="add">
+			<result name="success" type="redirect">findAllActivity</result>
+			<result name="error">pages/error.jsp</result>
+		</action>
+		
+		<action name="preAddActivity">
+			<result name="success">pages/activity-add.jsp</result>
+		</action>
+		
+		<action name="editActivity" class="activityAction" method="edit">
+			<result name="success" type="redirect">findAllActivity</result>
+			<result name="error">pages/error.jsp</result>
+		</action>
+		
+		<action name="preEditActivity" class="activityAction" method="preEdit">
+			<result name="success">pages/activity-edit.jsp</result>
+		</action>
+		
+		<action name="deleteActivity" class="activityAction" method="delete">
+			<result name="success" type="redirect">findAllActivity</result>
+			<result name="error">pages/error.jsp</result>
+		</action>
+		
+		<!-- item -->
+		<action name="findAllItem" class="itemAction">
+			<result name="success">pages/item-list.jsp</result>
+			<result name="error">pages/error.jsp</result>
+		</action>
+		
+		<action name="addItem" class="itemAction" method="add">
+			<result name="success" type="redirect">findAllItem</result>
+			<result name="error">pages/error.jsp</result>
+		</action>
+		
+		<action name="preAddItem">
+			<result name="success">pages/item-add.jsp</result>
+		</action>
+		
+		<action name="editItem" class="itemAction" method="edit">
+			<result name="success" type="redirect">findAllItem</result>
+			<result name="error">pages/error.jsp</result>
+		</action>
+		
+		<action name="preEditItem" class="itemAction" method="preEdit">
+			<result name="success">pages/item-edit.jsp</result>
+		</action>
+		
+		<action name="deleteItem" class="itemAction" method="delete">
+			<result name="success" type="redirect">findAllItem</result>
+			<result name="error">pages/error.jsp</result>
+		</action>
+		
+		<!-- customer -->
+		<action name="findAllCustomer" class="customerAction">
+			<result name="success">pages/customer-list.jsp</result>
+			<result name="error">pages/error.jsp</result>
+		</action>
+		
+		<action name="addCustomer" class="customerAction" method="add">
+			<result name="success" type="redirect">findAllCustomer</result>
+			<result name="error">pages/error.jsp</result>
+		</action>
+		
+		<action name="preAddCustomer">
+			<result name="success">pages/customer-add.jsp</result>
+		</action>
+		
+		<action name="editCustomer" class="customerAction" method="edit">
+			<result name="success" type="redirect">findAllCustomer</result>
+			<result name="error">pages/error.jsp</result>
+		</action>
+		
+		<action name="preEditCustomer" class="customerAction" method="preEdit">
+			<result name="success">pages/customer-edit.jsp</result>
+		</action>
+		
+		<action name="deleteCustomer" class="customerAction" method="delete">
+			<result name="success" type="redirect">findAllCustomer</result>
+			<result name="error">pages/error.jsp</result>
+		</action>
+		
+		<!-- employee -->
+		<action name="findAllEmployee" class="employeeAction">
+			<result name="success">pages/employee-list.jsp</result>
+			<result name="error">pages/error.jsp</result>
+		</action>
+		
+		<action name="add" class="employeeAction" method="add">
+			<result name="success" type="redirect">findAllEmployee</result>
+			<result name="error">pages/error.jsp</result>
+		</action>
+		
+		<action name="preAdd">
+			<result name="success">pages/employee-add.jsp</result>
+		</action>
+		
+		<action name="edit" class="employeeAction" method="edit">
+			<result name="success" type="redirect">findAllEmployee</result>
+			<result name="error">pages/error.jsp</result>
+		</action>
+		
+		<action name="preEdit" class="employeeAction" method="preEdit">
+			<result name="success">pages/employee-edit.jsp</result>
+		</action>
+		
+		<action name="delete" class="employeeAction" method="delete">
+			<result name="success" type="redirect">findAllEmployee</result>
+			<result name="error">pages/error.jsp</result>
+		</action>
+		
+		<action name="findByKeyword" class="employeeAction" method="findByKeyword">
+			<result name="success">pages/employee-list.jsp</result>
+			<result name="error">pages/error.jsp</result>
+		</action>
+    </package>
+</struts>
