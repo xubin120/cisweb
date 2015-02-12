@@ -40,12 +40,12 @@ public class LoginAction extends ActionSupport {
         LoginVO resultVO = loginDao.queryLoginInfo(loginVO);
         
         if (resultVO != null) {
-            ObjectMapper mapper = new ObjectMapper();  
-            String jsonStr = mapper.writeValueAsString(map);
-            
-            PrintWriter out = response.getWriter();
-            out.println(jsonStr);
-            out.flush();
+//            ObjectMapper mapper = new ObjectMapper();  
+//            String jsonStr = mapper.writeValueAsString(map);
+//            
+//            PrintWriter out = response.getWriter();
+//            out.println(jsonStr);
+//            out.flush();
             return SUCCESS;
         } else {
             return INPUT;
