@@ -11,7 +11,11 @@
 <meta name="keywords" content="table">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <meta name="renderer" content="webkit">
-<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta http-equiv="pragma" content="no-cache">  
+<meta http-equiv="cache-control" content="no-cache">  
+<meta http-equiv="expires" content="0">  
+
 <link rel="icon" type="image/png" href="assets/i/logo.jpg">
 <link rel="stylesheet" href="assets/css/amazeui.min.css" />
 <link rel="stylesheet" href="assets/css/admin.css" />
