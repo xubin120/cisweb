@@ -1,7 +1,7 @@
 <%@page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <script type="text/javascript">
 function logout() {
-	location.replace("logout");
+	window.location.replace("logout");
 }
 </script>
 <header class="am-topbar admin-header am-topbar-fixed-top">

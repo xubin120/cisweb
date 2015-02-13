@@ -1,9 +1,11 @@
 package com.simon.cis.action;
 
-import java.io.PrintWriter;
+import java.util.Map;
 
+import org.apache.struts2.ServletActionContext;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import com.simon.cis.dao.LoginDao;
 import com.simon.cis.vo.LoginVO;
@@ -19,11 +21,9 @@ public class LoginAction extends ActionSupport {
      */
     private static final long serialVersionUID = -656764640302594636L;
 
-    private String username;
-    private String password;
     private LoginVO loginVO;
     
-    private String json;
+    private String resultMsg;
 
     @Autowired
     private LoginDao loginDao;
@@ -34,38 +34,27 @@ public class LoginAction extends ActionSupport {
 
     @Override
     public String execute() throws Exception {
-        System.out.println("用户名："+loginVO.getUsername());
-        System.out.println("密码："+loginVO.getPwd());
         
         LoginVO resultVO = loginDao.queryLoginInfo(loginVO);
         
         if (resultVO != null) {
-//            ObjectMapper mapper = new ObjectMapper();  
-//            String jsonStr = mapper.writeValueAsString(map);
-//            
-//            PrintWriter out = response.getWriter();
-//            out.println(jsonStr);
-//            out.flush();
-            return SUCCESS;
+            //记录用户登录信息  
+            Map<String, Object> attibutes = ActionContext.getContext().getSession();
+            attibutes.put("username", resultVO.getUsername());  
+            
+            resultMsg = "success";
         } else {
-            return INPUT;
+            resultMsg = "error";
         }
+        
+        ServletActionContext.getResponse().getWriter().print(resultMsg); 
+        return null;
     }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
+    
+    public String logout() throws Exception {
+        ActionContext.getContext().getSession().clear();
+        ServletActionContext.getRequest().getSession().invalidate();
+        return SUCCESS;
     }
 
     public LoginVO getLoginVO() {
@@ -76,11 +65,11 @@ public class LoginAction extends ActionSupport {
         this.loginVO = loginVO;
     }
 
-    public String getJson() {
-        return json;
+    public String getResultMsg() {
+        return resultMsg;
     }
 
-    public void setJson(String json) {
-        this.json = json;
+    public void setResultMsg(String resultMsg) {
+        this.resultMsg = resultMsg;
     }
 }

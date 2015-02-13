@@ -4,8 +4,13 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
 <mapper namespace="com.simon.cis.vo.LoginMapper">
+	<resultMap id="loginVOResultMap" type="loginVO">
+		<id property="id" column="id" javaType="int" />
+		<result property="username" column="name" />
+		<result property="pwd" column="pwd" />
+	</resultMap>
 	
-	<select id="queryLoginInfo" parameterType="loginVO" resultType="loginVO">
+	<select id="queryLoginInfo" parameterType="loginVO" resultMap="loginVOResultMap">
 		select name, pwd from t_account where name=#{username} and pwd=#{pwd}
 	</select>
 </mapper>
