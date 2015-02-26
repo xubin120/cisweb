@@ -97,10 +97,10 @@ $(function(){
             	val = $(this).val(); 
             }
         }); 
-        alert("活动id："+val); 
+        //alert("活动id："+val); 
 
         $("[name='shopVO.activityId']").val(val);
-        alert($("[name='shopVO.activityId']").val());
+        //alert($("[name='shopVO.activityId']").val());
     });
 
   	//获取方案
@@ -191,8 +191,8 @@ $(function(){
 			</div>
 				
 			<div class="am-u-sm-12">
-		    	<form id="fm1" class="am-form am-form-horizontal" action="addShop" method="post">
-		    		<input type="hidden" name="shopVO.id" value="${shopVO.customerId}"/>
+		    	<form id="fm1" class="am-form am-form-horizontal" action="editShop" method="post">
+		    		<input type="hidden" name="shopVO.id" value="${shopVO.id}"/>
 		    		<input type="hidden" id="hdn_customerId" name="shopVO.customerId" value="${shopVO.customerId}"/>
 		    		<input type="hidden" id="hdn_employeeId" name="shopVO.employeeId" value="${shopVO.employeeId}"/>
 		    		<input type="hidden" id="hdn_activityId" name="shopVO.activityId" value="${shopVO.activityId}"/>
@@ -203,7 +203,7 @@ $(function(){
 						<div class="am-u-sm-3">
 							<div class="am-form-group am-form-icon">
 								<i class="am-icon-calendar"></i>
-								<input type="datetime-local" class="am-form-field am-input-sm" name="shopVO.arrivalTime" value="${shopVO.arrivalTime}">
+								<input type="datetime-local" class="am-form-field am-input-sm" name="shopVO.arrivalTime" required value="${shopVO.arrivalTime}">
 							</div>
 						</div>
 						<label class="am-u-sm-1 am-form-label" style="color: red">* 必填</label>

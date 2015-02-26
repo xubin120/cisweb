@@ -23,7 +23,6 @@ import com.simon.cis.vo.CustomerVO;
 import com.simon.cis.vo.EmployeeVO;
 import com.simon.cis.vo.ItemVO;
 import com.simon.cis.vo.PlanVO;
-import com.simon.cis.vo.ReservationVO;
 import com.simon.cis.vo.ShopVO;
 
 /**
@@ -149,14 +148,13 @@ public class ShopAction extends ActionSupport {
 
     public String edit() throws Exception {
         
-//        int i = reservationDao.updateReservation(reservationVO);
-//
-//        if (i > 0) {
-//            return SUCCESS;
-//        } else {
-//            return ERROR;
-//        }
-        return null;
+        int i = shopDao.updateShop(shopVO);
+
+        if (i > 0) {
+            return SUCCESS;
+        } else {
+            return ERROR;
+        }
     }
 
     @Override

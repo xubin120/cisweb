@@ -7,7 +7,7 @@
 	<resultMap id="employeeVOResultMap" type="employeeVO"> 
         <id property="id" column="id" javaType="int" /> 
         <result property="name" column="name" javaType="String" /> 
-        <result property="age" column="age" javaType="String" /> 
+        <result property="birthday" column="birthday" javaType="String" /> 
         <result property="sex" column="sex" javaType="String" /> 
         <result property="phone" column="phone" javaType="String" /> 
         <result property="number" column="number" javaType="String" /> 
@@ -22,7 +22,7 @@
 	<insert id="insertEmployee" parameterType="employeeVO" useGeneratedKeys="true" keyProperty="id">
 		insert into t_employee (
 			name,
-			age,
+			birthday,
 			sex,
 			phone,
 			number,
@@ -36,7 +36,7 @@
 		)
   		values (
   			#{name},
-  			#{age},
+  			#{birthday},
   			#{sex},
   			#{phone},
   			#{number},
@@ -57,12 +57,12 @@
 	</select>
 	
 	<select id="findById" parameterType="int" resultMap="employeeVOResultMap">
-		select id, name, age, sex, phone, number, qq, email, address, status, entry_date, departure_date from t_employee
+		select id, name, birthday, sex, phone, number, qq, email, address, status, entry_date, departure_date from t_employee
 		where id=#{id}
 	</select>
 	
 	<update id="updateEmployee" parameterType="employeeVO">
-		update t_employee set age=#{age}, sex=#{sex}, phone=#{phone}, number=#{number}, qq=#{qq}, email=#{email}, 
+		update t_employee set birthday=#{birthday}, sex=#{sex}, phone=#{phone}, number=#{number}, qq=#{qq}, email=#{email}, 
 							  address=#{email}, status=#{status}, entry_date=#{entryDate}, departure_date=#{departureDate}
 		where id=#{id}
 	</update>

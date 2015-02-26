@@ -167,7 +167,7 @@ $(function(){
 						<div class="am-u-sm-3">
 							<div class="am-form-group am-form-icon">
 								<i class="am-icon-calendar"></i>
-								<input type="datetime-local" class="am-form-field am-input-sm" name="shopVO.arrivalTime">
+								<input type="datetime-local" class="am-form-field am-input-sm" name="shopVO.arrivalTime" required>
 							</div>
 						</div>
 						<label class="am-u-sm-1 am-form-label" style="color: red">* 必填</label>

@@ -68,7 +68,7 @@ $(function() {
         });     
     };    
     //调用文本框的id  
-	$("#employee-age").numeral();
+	//$("#employee-age").numeral();
 
 });
 </script>
@@ -105,9 +105,12 @@ $(function() {
 							<input type="text" class="am-form-field am-input-sm" id="employee-name" name="employeeVO.name" placeholder="请输入姓名" required maxlength="10" tabindex="1">
 						</div>
 						<label class="am-u-sm-1 am-form-label" style="color: red">* 必填</label>
-						<label for="employee-age" class="am-u-sm-2 am-form-label">年龄</label>
+						<label for="employee-birthday" class="am-u-sm-2 am-form-label">出生年月</label>
 						<div class="am-u-sm-3">
-							<input type="text" class="am-form-field am-input-sm" id="employee-age" name="employeeVO.age" placeholder="请输入年龄" required maxlength="2" min="15">
+							<div class="am-form-group am-form-icon">
+								<i class="am-icon-calendar"></i>
+								<input type="date" class="am-form-field am-input-sm" name="employeeVO.birthday" placeholder="请选择出生年月" required>
+							</div>
 						</div>
 						<label class="am-u-sm-1 am-form-label" style="color: red">* 必填</label>
 					</div>

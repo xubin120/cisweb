@@ -111,13 +111,17 @@
 	</select>
 	
 	<update id="updateShop" parameterType="shopVO">
-		update t_reservation 
-		   set date = #{date},
-		   	   customer_id = #{customerId},
-		   	   shop_time = #{shopTime},
-			   anti_shop_time = #{antiShopTime},
-			   anti_shop_remind_time = #{antiShopRemindTime},
-			   mark = #{mark}
+		update t_shop 
+		   set arrival_time = #{arrivalTime},
+		   	   room = #{room},
+		   	   hours = #{hours},
+			   content = #{content},
+			   response = #{response},
+			   customer_id = #{customerId},
+			   employee_id = #{employeeId},
+			   activity_id = #{activityId},
+			   plan_id = #{planId},
+			   item_id = #{itemId}
 		 where id = #{id}
 	</update>
 </mapper>

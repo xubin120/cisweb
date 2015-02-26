@@ -4,7 +4,7 @@ package com.simon.cis.vo;
 public class EmployeeVO {
     private int id;
     private String name;
-    private String age;
+    private String birthday;
     private String sex;
     private String phone;
     private String number;
@@ -28,11 +28,11 @@ public class EmployeeVO {
     public void setName(String name) {
         this.name = name;
     }
-    public String getAge() {
-        return age;
+    public String getBirthday() {
+        return birthday;
     }
-    public void setAge(String age) {
-        this.age = age;
+    public void setBirthday(String birthday) {
+        this.birthday = birthday;
     }
     public String getSex() {
         return sex;
@@ -99,7 +99,7 @@ public class EmployeeVO {
         StringBuffer sb = new StringBuffer();
         sb.append(" id="+this.getId());
         sb.append("\n name="+this.getName());
-        sb.append("\n age="+this.getAge());
+        sb.append("\n age="+this.getBirthday());
         sb.append("\n sex="+this.getSex());
         sb.append("\n phone="+this.getPhone());
         sb.append("\n number="+this.getNumber());
