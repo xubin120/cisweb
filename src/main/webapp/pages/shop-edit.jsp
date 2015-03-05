@@ -19,9 +19,12 @@
 <link rel="icon" type="image/png" href="assets/i/logo.jpg">
 <link rel="stylesheet" href="assets/css/amazeui.min.css" />
 <link rel="stylesheet" href="assets/css/admin.css">
+<link rel="stylesheet" href="assets/css/amazeui.datetimepicker.css" />
 
 <script src="assets/js/jquery-1.11.2.min.js"></script>
 <script src="assets/js/amazeui.min.js"></script>
+<script src="assets/js/amazeui.datetimepicker.min.js"></script>
+<script src="assets/js/cis.js"></script>
 <script>
 $(function(){
 	//文本框只能输入数字，并屏蔽输入法和粘贴  
@@ -69,10 +72,8 @@ $(function(){
             	val = $(this).val(); 
             }
         }); 
-        //alert(val); 
 
         $("[name='shopVO.customerId']").val(val);
-        //alert($("[name='itemIds']").val());
     }); 
 
   	//获取美容师
@@ -83,10 +84,8 @@ $(function(){
             	val = $(this).val(); 
             }
         }); 
-        //alert(val); 
 
         $("[name='shopVO.employeeId']").val(val);
-        //alert($("[name='itemIds']").val());
     });
 
   	//获取活动
@@ -97,10 +96,8 @@ $(function(){
             	val = $(this).val(); 
             }
         }); 
-        //alert("活动id："+val); 
 
         $("[name='shopVO.activityId']").val(val);
-        //alert($("[name='shopVO.activityId']").val());
     });
 
   	//获取方案
@@ -111,10 +108,8 @@ $(function(){
             	val = $(this).val(); 
             }
         }); 
-        //alert(val); 
 
         $("[name='shopVO.planId']").val(val);
-        //alert($("[name='itemIds']").val());
     });
 
   	//获取项目
@@ -125,10 +120,8 @@ $(function(){
             	val = $(this).val(); 
             }
         }); 
-        //alert(val); 
 
         $("[name='shopVO.itemId']").val(val);
-        //alert($("[name='itemIds']").val());
     });
 
   	//选中客户
@@ -165,6 +158,11 @@ $(function(){
      	$("#radio_item_id_"+itemId).attr("checked",true);
     }
     selectItemChk();
+
+    $('#datetimepicker-arrivalTime').datetimepicker({
+    	language:  'zh-CN',
+    	format: 'yyyy-mm-dd hh:ii'
+    });
 });
 </script>
 </head>
@@ -191,7 +189,8 @@ $(function(){
 			</div>
 				
 			<div class="am-u-sm-12">
-		    	<form id="fm1" class="am-form am-form-horizontal" action="editShop" method="post">
+		    	<form id="fm1" class="am-form am-form-horizontal" action="editShop" method="post" data-am-validator>
+		    	<fieldset>
 		    		<input type="hidden" name="shopVO.id" value="${shopVO.id}"/>
 		    		<input type="hidden" id="hdn_customerId" name="shopVO.customerId" value="${shopVO.customerId}"/>
 		    		<input type="hidden" id="hdn_employeeId" name="shopVO.employeeId" value="${shopVO.employeeId}"/>
@@ -201,9 +200,9 @@ $(function(){
 					<div class="am-g am-form-group">
 						<label for="shop-arrival-time" class="am-u-sm-2 am-form-label">到店时间</label>
 						<div class="am-u-sm-3">
-							<div class="am-form-group am-form-icon">
-								<i class="am-icon-calendar"></i>
-								<input type="datetime-local" class="am-form-field am-input-sm" name="shopVO.arrivalTime" required value="${shopVO.arrivalTime}">
+							<div class="am-input-group am-form-icon date" id="datetimepicker-arrivalTime" >
+								<span class="am-input-group-label add-on"><i class="icon-th am-icon-calendar"></i></span>
+								<input type="text" class="am-form-field am-input-sm" name="shopVO.arrivalTime" required readonly value="${shopVO.arrivalTime}">
 							</div>
 						</div>
 						<label class="am-u-sm-1 am-form-label" style="color: red">* 必填</label>
@@ -541,6 +540,7 @@ $(function(){
 			            	<input type="submit" name="" value="提交保存" class="am-btn am-btn-default">
 			            </div>
 		            </div>
+		        </fieldset>
 				</form>
 			</div>
 			

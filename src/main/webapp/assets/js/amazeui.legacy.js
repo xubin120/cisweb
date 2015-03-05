@@ -1,4 +1,4 @@
-/*! Amaze UI v2.1.0-beta1 ~ Old IE Fucker | by Amaze UI Team | (c) 2015 AllMobilize, Inc. | Licensed under MIT | 2015-01-04T05:01:12 UTC */
+/*! Amaze UI v2.2.1 ~ Old IE Fucker | by Amaze UI Team | (c) 2015 AllMobilize, Inc. | Licensed under MIT | 2015-01-29T06:01:38 UTC */
 (function e(t, n, r) {
   function s(o, u) {
     if (!n[o]) {
@@ -637,12 +637,15 @@
         // Alert Class
         // NOTE: removeElement option is unavailable now
         var Alert = function(element, options) {
+          var _this = this;
           this.options = $.extend({}, Alert.DEFAULTS, options);
           this.$element = $(element);
 
           this.$element.
           addClass('am-fade am-in').
-          on('click.alert.amui', '.am-close', $.proxy(this.close, this));
+          on('click.alert.amui', '.am-close', function() {
+            _this.close.call(this);
+          });
         };
 
         Alert.DEFAULTS = {
@@ -1073,7 +1076,7 @@
 
           this.inited = false;
           this.scrollbarWidth = 0;
-          this.used = $([]);
+          this.$used = $([]);
         };
 
         Dimmer.DEFAULTS = {
@@ -1099,12 +1102,12 @@
 
           // 用于多重调用
           if (relatedElement) {
-            this.used = this.used.add($(relatedElement));
+            this.$used = this.$used.add($(relatedElement));
           }
 
           this.checkScrollbar().setScrollbar();
 
-          $element.show().trigger('open.dimmer.amui');
+          $element.off(transition.end).show().trigger('open.dimmer.amui');
 
           setTimeout(function() {
             $element.addClass('am-active');
@@ -1114,9 +1117,9 @@
         };
 
         Dimmer.prototype.close = function(relatedElement, force) {
-          this.used = this.used.not($(relatedElement));
+          this.$used = this.$used.not($(relatedElement));
 
-          if (!force && this.used.length) {
+          if (!force && this.$used.length) {
             return this;
           }
 
@@ -1125,12 +1128,12 @@
           $element.removeClass('am-active').trigger('close.dimmer.amui');
 
           function complete() {
-            this.resetScrollbar();
             $element.hide();
+            this.resetScrollbar();
           }
 
-          transition ? $element.one(transition.end, $.proxy(complete, this)) :
-            complete.call(this);
+          // transition ? $element.one(transition.end, $.proxy(complete, this)) :
+          complete.call(this);
 
           return this;
         };
@@ -1344,7 +1347,10 @@
           // triggers = this.options.trigger.split(' '),
           var $toggle = this.$toggle;
 
-          $toggle.on('click.' + eventNS, $.proxy(this.toggle, this));
+          $toggle.on('click.' + eventNS, $.proxy(function(e) {
+            e.preventDefault();
+            this.toggle();
+          }, this));
 
           /*for (var i = triggers.length; i--;) {
    var trigger = triggers[i];
@@ -3287,7 +3293,8 @@
           var $element = this.$element;
           var $bar = $element.find('.am-offcanvas-bar').first();
 
-          if (!$element.length || !$element.hasClass('am-active')) {
+          if (!$element.length || !this.active || !$element.hasClass(
+            'am-active')) {
             return;
           }
 
@@ -3357,7 +3364,8 @@
             if (!data) {
               $this.data('amui.offcanvas', (data = new OffCanvas(this,
                 options)));
-              data.open(relatedElement);
+              (!option || typeof option == 'object') && data.open(
+                relatedElement);
             }
 
             if (typeof option == 'string') {
@@ -4141,7 +4149,8 @@
             active: 'am-active'
           },
           closest: false,
-          smooth: true
+          smooth: true,
+          offsetTop: 0
         };
 
         ScrollSpyNav.prototype.process = function() {
@@ -4189,9 +4198,10 @@
 
         ScrollSpyNav.prototype.scrollProcess = function() {
           var $links = this.$links;
+          var options = this.options;
 
           // smoothScroll
-          if (this.options.smooth) {
+          if (options.smooth) {
             $links.on('click', function(e) {
               e.preventDefault();
 
@@ -4202,8 +4212,12 @@
                 return;
               }
 
+              var offsetTop = options.offsetTop &&
+                !isNaN(parseInt(options.offsetTop)) && parseInt(options.offsetTop) ||
+                0;
+
               $(window).smoothScroll({
-                position: $target.offset().top
+                position: $target.offset().top - offsetTop
               });
             });
           }
@@ -4233,8 +4247,7 @@
         UI.ready(function(context) {
           $('[data-am-scrollspy-nav]', context).each(function() {
             var $this = $(this);
-            var options = UI.utils.options($this.attr(
-              'data-am-scrollspy-nav'));
+            var options = UI.utils.options($this.data('amScrollspyNav'));
 
             Plugin.call($this, options);
           });

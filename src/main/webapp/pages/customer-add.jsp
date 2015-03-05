@@ -18,49 +18,31 @@
 <link rel="icon" type="image/png" href="assets/i/logo.jpg">
 <link rel="stylesheet" href="assets/css/amazeui.min.css" />
 <link rel="stylesheet" href="assets/css/admin.css">
+<link rel="stylesheet" href="assets/css/amazeui.datetimepicker.css" />
 
 <script src="assets/js/jquery-1.11.2.min.js"></script>
 <script src="assets/js/amazeui.min.js"></script>
+<script src="assets/js/amazeui.datetimepicker.min.js"></script>
+<script src="assets/js/cis.js"></script>
 <script>
 $(function() {
 
 	$('[tabindex=1]').focus();
 
-	//文本框只能输入数字，并屏蔽输入法和粘贴  
-	$.fn.numeral = function() {     
-    	$(this).css("ime-mode", "disabled");     
-        this.bind("keypress",function(e) {     
-	        var code = (e.keyCode ? e.keyCode : e.which);  //兼容火狐 IE      
-	        if(!$.browser.msie&&(e.keyCode==0x8))  //火狐下不能使用退格键     
-	        {     
-	        	return ;     
-	        }     
-	        return code >= 48 && code<= 57;     
-        });     
-        this.bind("blur", function() {     
-        	if (this.value.lastIndexOf(".") == (this.value.length - 1)) {     
-            	this.value = this.value.substr(0, this.value.length - 1);     
-            } else if (isNaN(this.value)) {     
-                this.value = "";     
-            }     
-        });     
-        this.bind("paste", function() {     
-            var s = clipboardData.getData('text');     
-            if (!/\D/.test(s));     
-            value = s.replace(/^0*/, '');     
-            return false;     
-        });     
-        this.bind("dragenter", function() {     
-            return false;     
-        });     
-        this.bind("keyup", function() {     
-        	if (/(^0+)/.test(this.value)) {     
-            	this.value = this.value.replace(/^0*/, '');     
-            }     
-        });     
-    };    
     //调用文本框的id  
 	$("#customer-age").numeral();
+
+	$('#datetimepicker-birthday').datetimepicker({
+    	language:  'zh-CN',
+    	format: 'yyyy-mm-dd',
+    	minView: 2
+    });
+
+	$('#datetimepicker-membershipDate').datetimepicker({
+    	language:  'zh-CN',
+    	format: 'yyyy-mm-dd',
+    	minView: 2
+    });
 
 });
 </script>
@@ -88,9 +70,10 @@ $(function() {
 			</div>
 				
 			<div class="am-u-sm-12">
-		    	<form id="fm1" class="am-form am-form-horizontal" action="addCustomer" method="post">
+		    	<form id="fm1" class="am-form am-form-horizontal" action="addCustomer" method="post" data-am-validator>
+		    	<fieldset>
 		    		<input type="hidden" name="customerVO.isDelete" value="N" />
-					<div class="am-form-group">
+					<div class="am-g am-form-group">
 						<label for="customer-name" class="am-u-sm-2 am-form-label">客户姓名</label>
 						<div class="am-u-sm-3">
 							<input type="text" class="am-form-field am-input-sm" id="customer-name" name="customerVO.name" placeholder="请输入客户姓名" required maxlength="10" tabindex="1">
@@ -98,20 +81,20 @@ $(function() {
 						<label class="am-u-sm-1 am-form-label" style="color: red">* 必填</label>
 						<label for="customer-age" class="am-u-sm-2 am-form-label">年龄</label>
 						<div class="am-u-sm-3">
-							<input type="text" class="am-form-field am-input-sm" id="customer-age" name="customerVO.age" placeholder="请输入年龄" maxlength="2" min="15">
+							<input type="text" class="am-form-field am-input-sm" id="customer-age" name="customerVO.age" placeholder="请输入年龄" maxlength="2" >
 						</div>
 						<label class="am-u-sm-1 am-form-label">&nbsp;</label>
 					</div>
 					
-					<div class="am-form-group">
+					<div class="am-g am-form-group">
 						<label for="customer-sex" class="am-u-sm-2 am-form-label">性别</label>
 			          	<div class="am-u-sm-3">
-				            <div class="am-input-group" id="customer-sex">
+				            <div class="am-form-group" id="customer-sex">
 				            	<label class="am-radio am-radio-inline">
-				                	<input type="radio" name="customerVO.sex" id="option1" value="1" data-am-ucheck /> 男
+				                	<input type="radio" name="customerVO.sex" id="option1" value="1" /> 男
 				              	</label>
 				              	<label class="am-radio am-radio-inline">
-				                	<input type="radio" name="customerVO.sex" id="option2" value="2" data-am-ucheck /> 女
+				                	<input type="radio" name="customerVO.sex" id="option2" value="2" /> 女
 				              	</label>
 				            </div>
 			          	</div>
@@ -157,12 +140,12 @@ $(function() {
 						<label class="am-u-sm-1 am-form-label">&nbsp;</label>
 						<label for="customer-customerType" class="am-u-sm-2 am-form-label">客户类型</label>
 						<div class="am-u-sm-3">
-				            <div class="am-input-group" id="customer-customerType">
+				            <div class="am-form-group" id="customer-customerType">
 				            	<label class="am-radio am-radio-inline">
-				                	<input type="radio" name="customerVO.customerType" id="ctMember" value="1" data-am-ucheck /> 会员客户
+				                	<input type="radio" name="customerVO.customerType" id="ctMember" value="1" /> 会员客户
 				              	</label>
 				              	<label class="am-radio am-radio-inline">
-				                	<input type="radio" name="customerVO.customerType" id="ctPotential" value="2" data-am-ucheck /> 潜在客户
+				                	<input type="radio" name="customerVO.customerType" id="ctPotential" value="2" /> 潜在客户
 				              	</label>
 				            </div>
 			          	</div>
@@ -172,17 +155,17 @@ $(function() {
 					<div class="am-g am-form-group">
 						<label for="customer-assets" class="am-u-sm-2 am-form-label">生日</label>
 						<div class="am-u-sm-3">
-							<div class="am-form-group am-form-icon">
-								<i class="am-icon-calendar"></i>
-								<input type="date" class="am-form-field am-input-sm" name="customerVO.birthday" placeholder="请选择生日">
+							<div class="am-input-group am-form-icon date" id="datetimepicker-birthday" >
+								<span class="am-input-group-label add-on"><i class="icon-th am-icon-calendar"></i></span>
+								<input type="text" class="am-form-field am-input-sm" name="customerVO.birthday" placeholder="请选择生日" readonly>
 							</div>
 						</div>
 						<label class="am-u-sm-1 am-form-label">&nbsp;</label>
 						<label for="customer-membershipDate" class="am-u-sm-2 am-form-label">入会日期</label>
 						<div class="am-u-sm-3">
-							<div class="am-form-group am-form-icon">
-								<i class="am-icon-calendar"></i>
-								<input type="date" class="am-form-field am-input-sm" name="customerVO.membershipDate" placeholder="请选择入会日期">
+							<div class="am-input-group am-form-icon date" id="datetimepicker-membershipDate" >
+								<span class="am-input-group-label add-on"><i class="icon-th am-icon-calendar"></i></span>
+								<input type="text" class="am-form-field am-input-sm" name="customerVO.membershipDate" placeholder="请选择入会日期" readonly>
 							</div>
 						</div>
 						<label class="am-u-sm-1 am-form-label">&nbsp;</label>
@@ -194,6 +177,7 @@ $(function() {
 			            	<input type="submit" name="" value="提交保存" class="am-btn am-btn-default">
 			            </div>
 		            </div>
+		        </fieldset>
 				</form>
 			</div>
 			

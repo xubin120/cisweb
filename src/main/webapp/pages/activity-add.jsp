@@ -18,9 +18,30 @@
 <link rel="icon" type="image/png" href="assets/i/logo.jpg">
 <link rel="stylesheet" href="assets/css/amazeui.min.css" />
 <link rel="stylesheet" href="assets/css/admin.css">
+<link rel="stylesheet" href="assets/css/amazeui.datetimepicker.css" />
 
 <script src="assets/js/jquery-1.11.2.min.js"></script>
 <script src="assets/js/amazeui.min.js"></script>
+<script src="assets/js/amazeui.datetimepicker.min.js"></script>
+<script src="assets/js/cis.js"></script>
+
+<script>
+$(function() {
+
+    $('#datetimepicker-startDate').datetimepicker({
+    	language:  'zh-CN',
+    	format: 'yyyy-mm-dd',
+    	minView: 2
+    });
+
+    $('#datetimepicker-endDate').datetimepicker({
+    	language:  'zh-CN',
+    	format: 'yyyy-mm-dd',
+    	minView: 2
+    });
+});
+</script>
+
 </head>
 
 <body>
@@ -45,7 +66,8 @@
 			</div>
 				
 			<div class="am-u-sm-12">
-		    	<form id="fm1" class="am-form am-form-horizontal" action="addActivity" method="post">
+		    	<form id="fm1" class="am-form am-form-horizontal" action="addActivity" method="post" data-am-validator>
+		    	<fieldset>
 					<div class="am-g am-form-group">
 						<label for="activity-name" class="am-u-sm-2 am-form-label">活动名称</label>
 						<div class="am-u-sm-3">
@@ -63,20 +85,20 @@
 					<div class="am-g am-form-group">
 						<label for="activity-startDate" class="am-u-sm-2 am-form-label">活动开始日期</label>
 			          	<div class="am-u-sm-3">
-			            	<div class="am-form-group am-form-icon">
-								<i class="am-icon-calendar"></i>
-								<input type="date" class="am-form-field am-input-sm" name="activityVO.startDate" placeholder="请选择活动开始日期" required>
+							<div class="am-input-group am-form-icon date" id="datetimepicker-startDate" >
+								<span class="am-input-group-label add-on"><i class="icon-th am-icon-calendar"></i></span>
+								<input type="text" class="am-form-field am-input-sm" name="activityVO.startDate" placeholder="请选择活动开始日期" required readonly>
 							</div>
 			          	</div>
-			          	<label class="am-u-sm-1 am-form-label" style="color: red">* 必填</label>
+			          	<label class="am-u-sm-1 am-form-label" style="color: red">* 必选</label>
 			          	<label for="activity-endDate" class="am-u-sm-2 am-form-label">活动结束日期</label>
 			          	<div class="am-u-sm-3">
-			            	<div class="am-form-group am-form-icon">
-								<i class="am-icon-calendar"></i>
-								<input type="date" class="am-form-field am-input-sm" name="activityVO.endDate" placeholder="请选择活动结束日期" required>
+							<div class="am-input-group am-form-icon date" id="datetimepicker-endDate" >
+								<span class="am-input-group-label add-on"><i class="icon-th am-icon-calendar"></i></span>
+								<input type="text" class="am-form-field am-input-sm" name="activityVO.endDate" placeholder="请选择活动结束日期" required readonly>
 							</div>
 			          	</div>
-			          	<label class="am-u-sm-1 am-form-label" style="color: red">* 必填</label>
+			          	<label class="am-u-sm-1 am-form-label" style="color: red">* 必选</label>
 			        </div>
 					
 					<div class="am-form-group">
@@ -85,6 +107,7 @@
 			            	<input type="submit" name="" value="提交保存" class="am-btn am-btn-default">
 			            </div>
 		            </div>
+		        </fieldset>
 				</form>
 			</div>
 			

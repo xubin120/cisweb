@@ -17,11 +17,14 @@
 <meta http-equiv="expires" content="0">  
 
 <link rel="icon" type="image/png" href="assets/i/logo.jpg">
+<link rel="stylesheet" href="assets/css/amazeui.datetimepicker.css" />
 <link rel="stylesheet" href="assets/css/amazeui.min.css" />
 <link rel="stylesheet" href="assets/css/admin.css">
 
 <script src="assets/js/jquery-1.11.2.min.js"></script>
 <script src="assets/js/amazeui.min.js"></script>
+<script src="assets/js/amazeui.datetimepicker.min.js"></script>
+<script src="assets/js/cis.js"></script>
 <script>
 $(function(){
 	//获取选中选项的值 
@@ -32,10 +35,8 @@ $(function(){
             	val = $(this).val(); 
             }
         }); 
-        //alert(val); 
 
         $("[name='reservationVO.customerId']").val(val);
-        //alert($("[name='itemIds']").val());
     }); 
 
     selectChk();
@@ -43,6 +44,27 @@ $(function(){
         var customerId = $("#hdn_customerId").val();
      	$("#radio_customer_id_"+customerId).attr("checked",true);
     }
+
+    $('#datetimepicker-date').datetimepicker({
+    	language:  'zh-CN',
+    	format: 'yyyy-mm-dd',
+    	minView: 2
+    });
+    
+    $('#datetimepicker-shopTime').datetimepicker({
+    	language:  'zh-CN',
+    	format: 'yyyy-mm-dd hh:ii'
+    });
+
+    $('#datetimepicker-antiShopTime').datetimepicker({
+  	  	language:  'zh-CN',
+    	format: 'yyyy-mm-dd hh:ii'
+  	});
+
+    $('#datetimepicker-antiShopRemindTime').datetimepicker({
+  		language:  'zh-CN',
+    	format: 'yyyy-mm-dd hh:ii'
+  	});
 });
 </script>
 </head>
@@ -69,23 +91,24 @@ $(function(){
 			</div>
 				
 			<div class="am-u-sm-12">
-		    	<form id="fm1" class="am-form am-form-horizontal" action="editReservation" method="post">
+		    	<form id="fm1" class="am-form am-form-horizontal" action="editReservation" method="post" data-am-validator>
+		    	<fieldset>
 		    		<input type="hidden" name="reservationVO.id" value="${reservationVO.id}" />
 		    		<input type="hidden" id="hdn_customerId" name="reservationVO.customerId" value="${reservationVO.customerId}"/>
 					<div class="am-g am-form-group">
 						<label for="plan-name" class="am-u-sm-2 am-form-label">日期</label>
 						<div class="am-u-sm-3">
-							<div class="am-form-group am-form-icon">
-								<i class="am-icon-calendar"></i>
-								<input type="date" class="am-form-field am-input-sm" name="reservationVO.date" value="${reservationVO.date}" required>
+							<div class="am-input-group am-form-icon date" id="datetimepicker-date" >
+								<span class="am-input-group-label add-on"><i class="icon-th am-icon-calendar"></i></span>
+								<input type="text" class="am-form-field am-input-sm" name="reservationVO.date" readonly required value="${reservationVO.date}">
 							</div>
 						</div>
 						<label class="am-u-sm-1 am-form-label" style="color: red">* 必填</label>
 						<label for="plan-price" class="am-u-sm-2 am-form-label">预约到店时间</label>
 						<div class="am-u-sm-3">
-							<div class="am-form-group am-form-icon">
-								<i class="am-icon-calendar"></i>
-								<input type="datetime-local" class="am-form-field am-input-sm" name="reservationVO.shopTime" value="${reservationVO.shopTime}">
+							<div class="am-input-group am-form-icon date" id="datetimepicker-shopTime" >
+								<span class="am-input-group-label add-on"><i class="icon-th am-icon-calendar"></i></span>
+								<input type="text" class="am-form-field am-input-sm" name="reservationVO.shopTime" readonly value="${reservationVO.shopTime}">
 							</div>
 						</div>
 						<label class="am-u-sm-1 am-form-label">&nbsp;</label>
@@ -94,17 +117,17 @@ $(function(){
 					<div class="am-g am-form-group">
 						<label for="plan-name" class="am-u-sm-2 am-form-label">反预约时间</label>
 						<div class="am-u-sm-3">
-							<div class="am-form-group am-form-icon">
-								<i class="am-icon-calendar"></i>
-								<input type="datetime-local" class="am-form-field am-input-sm" name="reservationVO.antiShopTime" value="${reservationVO.antiShopTime}">
+							<div class="am-input-group am-form-icon date" id="datetimepicker-antiShopTime" >
+								<span class="am-input-group-label add-on"><i class="icon-th am-icon-calendar"></i></span>
+								<input type="text" class="am-form-field am-input-sm" name="reservationVO.antiShopTime" readonly value="${reservationVO.antiShopTime}">
 							</div>
 						</div>
 						<label class="am-u-sm-1 am-form-label">&nbsp;</label>
 						<label for="plan-price" class="am-u-sm-2 am-form-label">反预约提醒时间</label>
 						<div class="am-u-sm-3">
-							<div class="am-form-group am-form-icon">
-								<i class="am-icon-calendar"></i>
-								<input type="datetime-local" class="am-form-field am-input-sm" name="reservationVO.antiShopRemindTime" value="${reservationVO.antiShopRemindTime}">
+							<div class="am-input-group am-form-icon date" id="datetimepicker-antiShopRemindTime" >
+								<span class="am-input-group-label add-on"><i class="icon-th am-icon-calendar"></i></span>
+								<input type="text" class="am-form-field am-input-sm" name="reservationVO.antiShopRemindTime" readonly value="${reservationVO.antiShopRemindTime}">
 							</div>
 						</div>
 						<label class="am-u-sm-1 am-form-label">&nbsp;</label>
@@ -123,7 +146,7 @@ $(function(){
 			            		<a href="#" data-am-modal="{target: '#my-popup'}"><span class="am-icon-search-plus" /></a>
 			            	</label> 
 			          	</div>
-			          	<label class="am-u-sm-1 am-form-label">&nbsp;</label>
+			          	<label class="am-u-sm-1 am-form-label" style="color: red">* 必选</label>
 			        </div>
 			        
 					<div class="am-popup" id="my-popup">
@@ -185,6 +208,7 @@ $(function(){
 			            	<input type="submit" name="" value="提交保存" class="am-btn am-btn-default">
 			            </div>
 		            </div>
+		        </fieldset>
 				</form>
 			</div>
 			

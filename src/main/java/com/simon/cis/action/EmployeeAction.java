@@ -109,7 +109,6 @@ public class EmployeeAction extends ActionSupport {
         employeeList = employeeDao.findAllEmployee(rb);
         if (employeeList != null) {
             pi = new PageInfo(employeeList);
-//            System.out.println(pi.toString());
             return SUCCESS;
         } else {
             return ERROR;

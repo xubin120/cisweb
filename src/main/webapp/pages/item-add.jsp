@@ -45,7 +45,8 @@
 			</div>
 				
 			<div class="am-u-sm-12">
-		    	<form id="fm1" class="am-form am-form-horizontal" action="addItem" method="post">
+		    	<form id="fm1" class="am-form am-form-horizontal" action="addItem" method="post" data-am-validator>
+		    	<fieldset>
 					<div class="am-g am-form-group">
 						<label for="item-name" class="am-u-sm-2 am-form-label">项目名称</label>
 						<div class="am-u-sm-3">
@@ -77,6 +78,7 @@
 			            	<input type="submit" name="" value="提交保存" class="am-btn am-btn-default">
 			            </div>
 		            </div>
+		        </fieldset>
 				</form>
 			</div>
 			

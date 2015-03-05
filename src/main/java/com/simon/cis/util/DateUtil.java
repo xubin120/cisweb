@@ -180,4 +180,15 @@ public class DateUtil {
         }
         return isGreater;
     }
+    
+    /**
+     * 处理日期或时间
+     * 
+     * @param format 日期或时间格式
+     * @param date 日期或时间
+     * @return 处理后的值
+     */
+    public static String dealDateOrDateTime(String format, String date) {
+        return date == null ? "" : getDateString(format, date); 
+    }
 }

@@ -109,7 +109,7 @@
 			<result name="error">pages/error.jsp</result>
 		</action>
 		
-		<action name="preAddActivity">
+		<action name="preAddActivity" class="activityAction" method="preAdd">
 			<result name="success">pages/activity-add.jsp</result>
 		</action>
 		
@@ -138,7 +138,7 @@
 			<result name="error">pages/error.jsp</result>
 		</action>
 		
-		<action name="preAddItem">
+		<action name="preAddItem" class="itemAction" method="preAdd">
 			<result name="success">pages/item-add.jsp</result>
 		</action>
 		
@@ -167,7 +167,7 @@
 			<result name="error">pages/error.jsp</result>
 		</action>
 		
-		<action name="preAddCustomer">
+		<action name="preAddCustomer" class="customerAction" method="preAdd">
 			<result name="success">pages/customer-add.jsp</result>
 		</action>
 		
@@ -196,7 +196,7 @@
 			<result name="error">pages/error.jsp</result>
 		</action>
 		
-		<action name="preAdd">
+		<action name="preAdd" class="employeeAction" method="preAdd">
 			<result name="success">pages/employee-add.jsp</result>
 		</action>
 		

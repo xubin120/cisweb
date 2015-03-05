@@ -7,42 +7,42 @@
         http://www.springframework.org/schema/context  
         http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 
-	<bean id="loginAction" class="com.simon.cis.action.LoginAction" />
+	<bean id="loginAction" class="com.simon.cis.action.LoginAction" scope="prototype" />
 	<bean id="loginDao" class="com.simon.cis.dao.LoginDao">  
         <property name="sqlSessionFactory" ref="sqlSessionFactory"/>  
     </bean> 
     
-    <bean id="employeeAction" class="com.simon.cis.action.EmployeeAction" />
+    <bean id="employeeAction" class="com.simon.cis.action.EmployeeAction" scope="prototype" />
 	<bean id="employeeDao" class="com.simon.cis.dao.EmployeeDao">  
         <property name="sqlSessionFactory" ref="sqlSessionFactory"/>  
     </bean>
     
-    <bean id="customerAction" class="com.simon.cis.action.CustomerAction" />
+    <bean id="customerAction" class="com.simon.cis.action.CustomerAction" scope="prototype" />
 	<bean id="customerDao" class="com.simon.cis.dao.CustomerDao">  
         <property name="sqlSessionFactory" ref="sqlSessionFactory"/>  
     </bean> 
     
-    <bean id="itemAction" class="com.simon.cis.action.ItemAction" />
+    <bean id="itemAction" class="com.simon.cis.action.ItemAction" scope="prototype" />
 	<bean id="itemDao" class="com.simon.cis.dao.ItemDao">  
         <property name="sqlSessionFactory" ref="sqlSessionFactory"/>  
     </bean>
     
-    <bean id="activityAction" class="com.simon.cis.action.ActivityAction" />
+    <bean id="activityAction" class="com.simon.cis.action.ActivityAction" scope="prototype" />
 	<bean id="activityDao" class="com.simon.cis.dao.ActivityDao">  
         <property name="sqlSessionFactory" ref="sqlSessionFactory"/>  
     </bean>
     
-    <bean id="planAction" class="com.simon.cis.action.PlanAction" />
+    <bean id="planAction" class="com.simon.cis.action.PlanAction" scope="prototype" />
 	<bean id="planDao" class="com.simon.cis.dao.PlanDao">  
         <property name="sqlSessionFactory" ref="sqlSessionFactory"/>  
     </bean>
     
-    <bean id="reservationAction" class="com.simon.cis.action.ReservationAction" />
+    <bean id="reservationAction" class="com.simon.cis.action.ReservationAction" scope="prototype" />
 	<bean id="reservationDao" class="com.simon.cis.dao.ReservationDao">  
         <property name="sqlSessionFactory" ref="sqlSessionFactory"/>  
     </bean>
     
-    <bean id="shopAction" class="com.simon.cis.action.ShopAction" />
+    <bean id="shopAction" class="com.simon.cis.action.ShopAction" scope="prototype" />
 	<bean id="shopDao" class="com.simon.cis.dao.ShopDao">  
         <property name="sqlSessionFactory" ref="sqlSessionFactory"/>  
     </bean>

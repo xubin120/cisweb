@@ -14,6 +14,7 @@ import com.simon.cis.dao.ReservationDao;
 import com.simon.cis.page.PageInfo;
 import com.simon.cis.util.DateUtil;
 import com.simon.cis.util.PropertiesUtil;
+import com.simon.cis.util.StringUtil;
 import com.simon.cis.vo.CustomerVO;
 import com.simon.cis.vo.ReservationVO;
 
@@ -53,6 +54,17 @@ public class ReservationAction extends ActionSupport {
 
     public String add() throws Exception {
         
+        if (StringUtil.isEmpty(reservationVO.getShopTime())) {
+            reservationVO.setShopTime(null);
+        }
+        
+        if (StringUtil.isEmpty(reservationVO.getAntiShopTime())) {
+            reservationVO.setAntiShopTime(null);
+        }
+        
+        if (StringUtil.isEmpty(reservationVO.getAntiShopRemindTime())) {
+            reservationVO.setAntiShopRemindTime(null);
+        }
         int i = reservationDao.insertReservation(reservationVO);
 
         if (i > 0) {
@@ -65,9 +77,9 @@ public class ReservationAction extends ActionSupport {
     public String preEdit() throws Exception {
         reservationVO = reservationDao.findById(Integer.valueOf(reservationId).intValue());
         
-        reservationVO.setShopTime(DateUtil.getDateString("yyyy-MM-dd HH:mm:ss", reservationVO.getShopTime()));
-        reservationVO.setAntiShopTime(DateUtil.getDateString("yyyy-MM-dd HH:mm:ss", reservationVO.getAntiShopTime()));
-        reservationVO.setAntiShopRemindTime(DateUtil.getDateString("yyyy-MM-dd HH:mm", reservationVO.getAntiShopRemindTime()));
+        reservationVO.setShopTime(DateUtil.dealDateOrDateTime("yyyy-MM-dd HH:mm", reservationVO.getShopTime()));
+        reservationVO.setAntiShopTime(DateUtil.dealDateOrDateTime("yyyy-MM-dd HH:mm", reservationVO.getAntiShopTime()));
+        reservationVO.setAntiShopRemindTime(DateUtil.dealDateOrDateTime("yyyy-MM-dd HH:mm", reservationVO.getAntiShopRemindTime()));
         
         String pageRecords = PropertiesUtil.getPropertyValue("pagerecords");
         RowBounds rb = new RowBounds(currentPage, Integer.valueOf(pageRecords).intValue());
@@ -101,9 +113,9 @@ public class ReservationAction extends ActionSupport {
         if (reservationList != null) {
             
             for (ReservationVO reservation : reservationList) {
-                reservation.setShopTime(DateUtil.getDateString("yyyy-MM-dd HH:mm:ss", reservation.getShopTime()));
-                reservation.setAntiShopTime(DateUtil.getDateString("yyyy-MM-dd HH:mm:ss", reservation.getAntiShopTime()));
-                reservation.setAntiShopRemindTime(DateUtil.getDateString("yyyy-MM-dd HH:mm", reservation.getAntiShopRemindTime()));
+                reservation.setShopTime(DateUtil.dealDateOrDateTime("yyyy-MM-dd HH:mm", reservation.getShopTime()));
+                reservation.setAntiShopTime(DateUtil.dealDateOrDateTime("yyyy-MM-dd HH:mm", reservation.getAntiShopTime()));
+                reservation.setAntiShopRemindTime(DateUtil.dealDateOrDateTime("yyyy-MM-dd HH:mm", reservation.getAntiShopRemindTime()));
             }
             
             pi = new PageInfo(reservationList);

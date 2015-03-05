@@ -34,7 +34,8 @@ public class LoginFilter extends HttpServlet implements Filter {
             url += "/";
         }
         
-        if ((url.startsWith("/") && !url.startsWith("/login")) && !url.startsWith("/index.jsp")) {// 若访问后台资源 过滤到login
+        if ((url.startsWith("/") && !url.startsWith("/login")) && !url.startsWith("/index.jsp")
+                && url.endsWith(".css") && url.endsWith(".js")) {// 若访问后台资源 过滤到login
             String user = (String) session.getAttribute("username");
             if (StringUtil.isEmpty(user)) {// 转入管理员登陆页面
                 response.sendRedirect(contextPath + "/login.jsp");

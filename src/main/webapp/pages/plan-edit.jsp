@@ -75,7 +75,8 @@ $(function(){
 			</div>
 				
 			<div class="am-u-sm-12">
-		    	<form id="fm1" class="am-form am-form-horizontal" action="editPlan" method="post">
+		    	<form id="fm1" class="am-form am-form-horizontal" action="editPlan" method="post" data-am-validator>
+		    	<fieldset>
 		    		<input type="hidden" name="planVO.id" value="${planVO.id}" />
 		    		<input type="hidden" name="itemIds" />
 		    		<input type="hidden" id="hdn_planItemIds" name="planItemIds" value="${planItemIds}"/>
@@ -172,6 +173,7 @@ $(function(){
 			            	<input type="submit" name="" value="提交保存" class="am-btn am-btn-default">
 			            </div>
 		            </div>
+		        </fieldset>
 				</form>
 			</div>
 			

@@ -1,4 +1,4 @@
-/*! Amaze UI v2.1.0-beta1 | by Amaze UI Team | (c) 2015 AllMobilize, Inc. | Licensed under MIT | 2015-01-04T05:01:12 UTC */
+/*! Amaze UI v2.2.1 | by Amaze UI Team | (c) 2015 AllMobilize, Inc. | Licensed under MIT | 2015-01-29T06:01:38 UTC */
 (function e(t, n, r) {
   function s(o, u) {
     if (!n[o]) {
@@ -74,7 +74,7 @@
         });
 
         module.exports = $.AMUI.accordion = {
-          VERSION: '2.0.0',
+          VERSION: '2.0.1',
           init: accordionInit
         };
 
@@ -124,6 +124,7 @@
         require('./ui.validator');
         require('./util.cookie');
         require('./util.fullscreen');
+        require('./util.geolocation');
         require('./util.qrcode');
         require('./util.store');
         require('./accordion');
@@ -145,6 +146,7 @@
         require('./slider');
         require('./tabs');
         require('./titlebar');
+        require('./wechatpay');
 
         module.exports = $.AMUI;
 
@@ -200,9 +202,11 @@
       "./util.cookie": 47,
       "./util.fastclick": 48,
       "./util.fullscreen": 49,
-      "./util.hammer": 50,
-      "./util.qrcode": 51,
-      "./util.store": 52
+      "./util.geolocation": 50,
+      "./util.hammer": 51,
+      "./util.qrcode": 52,
+      "./util.store": 53,
+      "./wechatpay": 54
     }
   ],
   3: [
@@ -806,7 +810,7 @@
       'use strict';
 
       module.exports = {
-        VERSION: '2.0.0'
+        VERSION: '2.0.1'
       };
 
     }, {}
@@ -854,7 +858,7 @@
         $(window).on('load', duoshuoInit);
 
         module.exports = $.AMUI.duoshuo = {
-          VERSION: '2.0.0',
+          VERSION: '2.0.1',
           init: duoshuoInit
         };
 
@@ -913,7 +917,7 @@
         });
 
         module.exports = $.AMUI.figure = {
-          VERSION: '2.0.1',
+          VERSION: '2.0.2',
           init: figureInit
         };
 
@@ -964,7 +968,7 @@
         });
 
         module.exports = $.AMUI.footer = {
-          VERSION: '3.1.1',
+          VERSION: '3.1.2',
           init: footerInit
         };
 
@@ -1033,7 +1037,7 @@
         });
 
         module.exports = $.AMUI.gallery = {
-          VERSION: '2.0.0',
+          VERSION: '2.0.2',
           init: galleryInit
         };
 
@@ -1080,7 +1084,7 @@
         });
 
         module.exports = $.AMUI.gotop = {
-          VERSION: '4.0.1',
+          VERSION: '4.0.2',
           init: goTopInit
         };
 
@@ -1134,7 +1138,7 @@
         require('./core');
 
         module.exports = $.AMUI.intro = {
-          VERSION: '4.0.0'
+          VERSION: '4.0.2'
         };
 
       }).call(this, typeof global !== "undefined" ? global : typeof self !==
@@ -1188,7 +1192,7 @@
         });
 
         module.exports = $.AMUI.listNews = {
-          VERSION: '3.0.0',
+          VERSION: '3.0.2',
           init: listNewsInit
         };
 
@@ -1324,7 +1328,7 @@
         $(document).on('ready', mapInit);
 
         module.exports = $.AMUI.map = {
-          VERSION: '2.0.1',
+          VERSION: '2.0.2',
           init: mapInit
         };
 
@@ -1362,7 +1366,7 @@
         $(window).on('load', mechatInit);
 
         module.exports = $.AMUI.mechat = {
-          VERSION: '2.0.0',
+          VERSION: '2.0.1',
           init: mechatInit
         };
 
@@ -1533,7 +1537,7 @@
         });
 
         module.exports = $.AMUI.menu = {
-          VERSION: '4.0.0',
+          VERSION: '4.0.2',
           init: menuInit
         };
 
@@ -1716,7 +1720,7 @@
         });
 
         module.exports = $.AMUI.navbar = {
-          VERSION: '2.0.0',
+          VERSION: '2.0.2',
           init: navbarInit
         };
 
@@ -1726,7 +1730,7 @@
       "./core": 4,
       "./ui.modal": 32,
       "./ui.share": 41,
-      "./util.qrcode": 51
+      "./util.qrcode": 52
     }
   ],
   18: [
@@ -1739,7 +1743,7 @@
         require('./core');
 
         module.exports = $.AMUI.pagination = {
-          VERSION: '4.0.0'
+          VERSION: '3.0.1'
         };
 
       }).call(this, typeof global !== "undefined" ? global : typeof self !==
@@ -1812,7 +1816,7 @@
         });
 
         module.exports = $.AMUI.paragraph = {
-          VERSION: '2.0.0',
+          VERSION: '2.0.1',
           init: paragraphInit
         };
 
@@ -1847,7 +1851,7 @@
         $(document).on('ready', sliderInit);
 
         module.exports = $.AMUI.slider = {
-          VERSION: '3.0.0',
+          VERSION: '3.0.1',
           init: sliderInit
         };
 
@@ -1882,7 +1886,7 @@
         });
 
         module.exports = $.AMUI.tab = {
-          VERSION: '4.0.0',
+          VERSION: '4.0.1',
           init: tabsInit
         };
 
@@ -1903,7 +1907,7 @@
         require('./core');
 
         module.exports = $.AMUI.titlebar = {
-          VERSION: '4.0.0'
+          VERSION: '4.0.1'
         };
 
       }).call(this, typeof global !== "undefined" ? global : typeof self !==
@@ -2566,12 +2570,15 @@
         // Alert Class
         // NOTE: removeElement option is unavailable now
         var Alert = function(element, options) {
+          var _this = this;
           this.options = $.extend({}, Alert.DEFAULTS, options);
           this.$element = $(element);
 
           this.$element.
           addClass('am-fade am-in').
-          on('click.alert.amui', '.am-close', $.proxy(this.close, this));
+          on('click.alert.amui', '.am-close', function() {
+            _this.close.call(this);
+          });
         };
 
         Alert.DEFAULTS = {
@@ -3001,21 +3008,20 @@
         var Datepicker = function(element, options) {
           this.$element = $(element);
           this.options = $.extend({}, Datepicker.DEFAULTS, options);
-
           this.format = DPGlobal.parseFormat(this.options.format);
+
           this.$element.data('date', this.options.date);
           this.language = this.getLocale(this.options.locale);
           this.theme = this.options.theme;
-          this.$picker = $(DPGlobal.template)
-            .appendTo('body')
-            .on({
-              click: $.proxy(this.click, this)
-              // mousedown: $.proxy(this.mousedown, this)
-            });
+          this.$picker = $(DPGlobal.template).appendTo('body').on({
+            click: $.proxy(this.click, this)
+            // mousedown: $.proxy(this.mousedown, this)
+          });
 
           this.isInput = this.$element.is('input');
           this.component = this.$element.is('.am-datepicker-date') ?
             this.$element.find('.am-datepicker-add-on') : false;
+
           if (this.isInput) {
             this.$element.on({
               'click.datepicker.amui': $.proxy(this.open, this),
@@ -3065,431 +3071,427 @@
           }
 
           this.startViewMode = this.viewMode;
-          this.weekStart = this.options.weekStart;
-          this.weekEnd = this.weekStart === 0 ? 6 : this.weekStart - 1;
+          this.weekStart = ((this.options.weekStart ||
+            Datepicker.locales[this.language].weekStart || 0) % 7);
+          this.weekEnd = ((this.weekStart + 6) % 7);
           this.onRender = this.options.onRender;
 
-          this.addTheme();
+          this.setTheme();
           this.fillDow();
           this.fillMonths();
           this.update();
           this.showMode();
         };
 
-        Datepicker.prototype = {
-          constructor: Datepicker,
-
-          open: function(e) {
-            this.$picker.show();
-            this.height = this.component ?
-              this.component.outerHeight() : this.$element.outerHeight();
-
-            this.place();
-            $(window).on('resize.datepicker.amui', $.proxy(this.place, this));
-            if (e) {
-              e.stopPropagation();
-              e.preventDefault();
-            }
-            var that = this;
-            $(document).on('click.datepicker.amui', function(ev) {
-              if ($(ev.target).closest('.am-datepicker').length === 0) {
-                that.close();
-              }
-            });
-            this.$element.trigger({
-              type: 'open',
-              date: this.date
-            });
-          },
-
-          close: function() {
-            this.$picker.hide();
-            $(window).off('resize.datepicker.amui', this.place);
-            this.viewMode = this.startViewMode;
-            this.showMode();
-            if (!this.isInput) {
-              $(document).off('click.datepicker.amui', this.close);
-            }
-            // this.set();
-            this.$element.trigger({
-              type: 'close',
-              date: this.date
-            });
-          },
-
-          set: function() {
-            var formated = DPGlobal.formatDate(this.date, this.format);
-            if (!this.isInput) {
-              if (this.component) {
-                this.$element.find('input').prop('value', formated);
-              }
-              this.$element.data('date', formated);
-            } else {
-              this.$element.prop('value', formated);
-            }
-          },
-
-          setValue: function(newDate) {
-            if (typeof newDate === 'string') {
-              this.date = DPGlobal.parseDate(newDate, this.format);
-            } else {
-              this.date = new Date(newDate);
-            }
-            this.set();
-
-            this.viewDate = new Date(this.date.getFullYear(),
-              this.date.getMonth(), 1, 0, 0, 0, 0);
-
-            this.fill();
-          },
-
-          place: function() {
-            var offset = this.component ?
-              this.component.offset() : this.$element.offset();
-            var $width = this.component ?
-              this.component.width() : this.$element.width();
-            var top = offset.top + this.height;
-            var left = offset.left;
-            var right = $doc.width() - offset.left - $width;
-            var isOutView = this.isOutView();
-            this.$picker.removeClass('am-datepicker-right');
-            this.$picker.removeClass('am-datepicker-up');
-            if ($doc.width() > 640) {
-              if (isOutView.outRight) {
-                this.$picker.addClass('am-datepicker-right');
-                this.$picker.css({
-                  top: top,
-                  left: 'auto',
-                  right: right
-                });
-                return;
-              }
-              if (isOutView.outBottom) {
-                this.$picker.addClass('am-datepicker-up');
-                top = offset.top - this.$picker.outerHeight(true);
-              }
-            } else {
-              left = 0;
-            }
-            this.$picker.css({
-              top: top,
-              left: left
-            });
-          },
-
-          update: function(newDate) {
-            this.date = DPGlobal.parseDate(
-              typeof newDate === 'string' ? newDate : (this.isInput ?
-                this.$element.prop('value') : this.$element.data('date')),
-              this.format
-            );
-            this.viewDate = new Date(this.date.getFullYear(),
-              this.date.getMonth(), 1, 0, 0, 0, 0);
-            this.fill();
-          },
-
-          fillDow: function() {
-            var dowCnt = this.weekStart;
-            var html = '<tr>';
-            while (dowCnt < this.weekStart + 7) {
-              html += '<th class="am-datepicker-dow">' +
-                Datepicker.locales[this.language].daysMin[(dowCnt++) % 7] +
-                '</th>';
-            }
-            html += '</tr>';
-            this.$picker.find('.am-datepicker-days thead').append(html);
-          },
-
-          fillMonths: function() {
-            var html = '';
-            var i = 0;
-            while (i < 12) {
-              html += '<span class="am-datepicker-month">' +
-                Datepicker.locales[this.language].monthsShort[i++] +
-                '</span>';
-            }
-            this.$picker.find('.am-datepicker-months td').append(html);
-          },
-
-          fill: function() {
-            var d = new Date(this.viewDate);
-            var year = d.getFullYear();
-            var month = d.getMonth();
-            var currentDate = this.date.valueOf();
-
-            var prevMonth = new Date(year, month - 1, 28, 0, 0, 0, 0);
-            var day = DPGlobal
-              .getDaysInMonth(prevMonth.getFullYear(), prevMonth.getMonth());
-
-            var daysSelect = this.$picker
-              .find('.am-datepicker-days .am-datepicker-select');
-
-            if (this.language === 'zh_CN') {
-              daysSelect.text(year + Datepicker.locales[this.language].year[
-                  0] +
-                ' ' + Datepicker.locales[this.language].months[month]);
-            } else {
-              daysSelect.text(Datepicker.locales[this.language].months[
-                  month] +
-                ' ' + year);
-            }
-
-            prevMonth.setDate(day);
-            prevMonth.setDate(day - (prevMonth.getDay() - this.weekStart +
-              7) % 7);
-
-            var nextMonth = new Date(prevMonth);
-            nextMonth.setDate(nextMonth.getDate() + 42);
-            nextMonth = nextMonth.valueOf();
-            var html = [];
-
-            var className;
-            var prevY;
-            var prevM;
-
-            while (prevMonth.valueOf() < nextMonth) {
-              if (prevMonth.getDay() === this.weekStart) {
-                html.push('<tr>');
-              }
-              className = this.onRender(prevMonth);
-              prevY = prevMonth.getFullYear();
-              prevM = prevMonth.getMonth();
-              if ((prevM < month && prevY === year) || prevY < year) {
-                className += ' am-datepicker-old';
-              } else if ((prevM > month && prevY === year) || prevY > year) {
-                className += ' am-datepicker-new';
-              }
-              if (prevMonth.valueOf() === currentDate) {
-                className += ' am-active';
-              }
-              html.push('<td class="am-datepicker-day ' +
-                className + '">' + prevMonth.getDate() + '</td>');
-
-              if (prevMonth.getDay() === this.weekEnd) {
-                html.push('</tr>');
-              }
-              prevMonth.setDate(prevMonth.getDate() + 1);
-
-            }
-
-            this.$picker.find('.am-datepicker-days tbody')
-              .empty().append(html.join(''));
-
-            var currentYear = this.date.getFullYear();
-
-            var months = this.$picker.find('.am-datepicker-months')
-              .find('.am-datepicker-select')
-              .text(year);
-            months = months.end()
-              .find('span').removeClass('am-active');
-
-            if (currentYear === year) {
-              months.eq(this.date.getMonth()).addClass('am-active');
-            }
-
-            html = '';
-            year = parseInt(year / 10, 10) * 10;
-            var yearCont = this.$picker
-              .find('.am-datepicker-years')
-              .find('.am-datepicker-select')
-              .text(year + '-' + (year + 9))
-              .end()
-              .find('td');
-
-            year -= 1;
-            for (var i = -1; i < 11; i++) {
-              html += '<span class="' +
-                (i === -1 || i === 10 ? ' am-datepicker-old' : '') +
-                (currentYear === year ? ' am-active' : '') + '">' + year +
-                '</span>';
-              year += 1;
-            }
-            yearCont.html(html);
-
-          },
-
-          click: function(event) {
-            event.stopPropagation();
-            event.preventDefault();
-            var month;
-            var year;
-
-            var target = $(event.target).closest('span, td, th');
-            if (target.length === 1) {
-              switch (target[0].nodeName.toLowerCase()) {
-                case 'th':
-                  switch (target[0].className) {
-                    case 'am-datepicker-switch':
-                      this.showMode(1);
-                      break;
-                    case 'am-datepicker-prev':
-                    case 'am-datepicker-next':
-                      this.viewDate['set' + DPGlobal.modes[this.viewMode].navFnc]
-                        .call(
-                          this.viewDate,
-                          this.viewDate['get' + DPGlobal.modes[this.viewMode]
-                            .navFnc]
-                          .call(this.viewDate) +
-                          DPGlobal.modes[this.viewMode].navStep *
-                          (target[0].className === 'am-datepicker-prev' ? -
-                            1 : 1)
-                      );
-                      this.fill();
-                      this.set();
-                      break;
-                  }
-                  break;
-                case 'span':
-                  if (target.is('.am-datepicker-month')) {
-                    month = target.parent().find('span').index(target);
-                    this.viewDate.setMonth(month);
-                  } else {
-                    year = parseInt(target.text(), 10) || 0;
-                    this.viewDate.setFullYear(year);
-                  }
-                  if (this.viewMode !== 0) {
-                    this.date = new Date(this.viewDate);
-                    this.$element.trigger({
-                      type: 'changeDate.datepicker.amui',
-                      date: this.date,
-                      viewMode: DPGlobal.modes[this.viewMode].clsName
-                    });
-                  }
-                  this.showMode(-1);
-                  this.fill();
-                  this.set();
-                  break;
-                case 'td':
-                  if (target.is('.am-datepicker-day') && !target.is(
-                    '.am-disabled')) {
-                    var day = parseInt(target.text(), 10) || 1;
-                    month = this.viewDate.getMonth();
-                    if (target.is('.am-datepicker-old')) {
-                      month -= 1;
-                    } else if (target.is('.am-datepicker-new')) {
-                      month += 1;
-                    }
-                    year = this.viewDate.getFullYear();
-                    this.date = new Date(year, month, day, 0, 0, 0, 0);
-                    this.viewDate = new Date(year, month, Math.min(28, day),
-                      0, 0, 0, 0);
-                    this.fill();
-                    this.set();
-                    this.$element.trigger({
-                      type: 'changeDate.datepicker.amui',
-                      date: this.date,
-                      viewMode: DPGlobal.modes[this.viewMode].clsName
-                    });
-                  }
-                  break;
-              }
-            }
-          },
-
-          mousedown: function(event) {
-            event.stopPropagation();
-            event.preventDefault();
-          },
-
-          showMode: function(dir) {
-            if (dir) {
-              this.viewMode = Math.max(this.minViewMode,
-                Math.min(2, this.viewMode + dir));
-            }
-
-            this.$picker
-              .find('>div')
-              .hide()
-              .filter('.am-datepicker-' + DPGlobal.modes[this.viewMode].clsName)
-              .show();
-          },
-
-          isOutView: function() {
-            var offset = this.component ?
-              this.component.offset() : this.$element.offset();
-            var isOutView = {
-              outRight: false,
-              outBottom: false
-            };
-            var $picker = this.$picker;
-            var width = offset.left + $picker.outerWidth(true);
-            var height = offset.top + $picker.outerHeight(true) +
-              this.$element.innerHeight();
-
-            if (width > $doc.width()) {
-              isOutView.outRight = true;
-            }
-            if (height > $doc.height()) {
-              isOutView.outBottom = true;
-            }
-            return isOutView;
-          },
-
-          getLocale: function(locale) {
-            if (!locale) {
-              locale = navigator.language && navigator.language.split('-');
-              locale[1] = locale[1].toUpperCase();
-              locale = locale.join('_');
-            }
-
-            if (!Datepicker.locales[locale]) {
-              locale = 'en_US';
-            }
-            return locale;
-          },
-
-          addTheme: function() {
-            if (this.theme) {
-              this.$picker.addClass('am-datepicker-' + this.theme);
-            }
-          }
-        };
-
         Datepicker.DEFAULTS = {
           locale: 'zh_CN',
           format: 'yyyy-mm-dd',
-          weekStart: 0,
+          weekStart: undefined,
           viewMode: 0,
           minViewMode: 0,
           date: '',
           theme: '',
+          autoClose: 1,
           onRender: function(date) {
             return '';
           }
         };
 
-        // Datepicker locales
+        Datepicker.prototype.open = function(e) {
+          this.$picker.show();
+          this.height = this.component ?
+            this.component.outerHeight() : this.$element.outerHeight();
 
+          this.place();
+          $(window).on('resize.datepicker.amui', $.proxy(this.place, this));
+          if (e) {
+            e.stopPropagation();
+            e.preventDefault();
+          }
+          var that = this;
+          $(document).on('click.datepicker.amui', function(ev) {
+            if ($(ev.target).closest('.am-datepicker').length === 0) {
+              that.close();
+            }
+          });
+          this.$element.trigger({
+            type: 'open.datepicker.amui',
+            date: this.date
+          });
+        };
+
+        Datepicker.prototype.close = function() {
+          this.$picker.hide();
+          $(window).off('resize.datepicker.amui', this.place);
+          this.viewMode = this.startViewMode;
+          this.showMode();
+          if (!this.isInput) {
+            $(document).off('click.datepicker.amui', this.close);
+          }
+          // this.set();
+          this.$element.trigger({
+            type: 'close.datepicker.amui',
+            date: this.date
+          });
+        };
+
+        Datepicker.prototype.set = function() {
+          var formated = DPGlobal.formatDate(this.date, this.format);
+          if (!this.isInput) {
+            if (this.component) {
+              this.$element.find('input').prop('value', formated);
+            }
+            this.$element.data('date', formated);
+          } else {
+            this.$element.prop('value', formated);
+          }
+        };
+
+        Datepicker.prototype.setValue = function(newDate) {
+          if (typeof newDate === 'string') {
+            this.date = DPGlobal.parseDate(newDate, this.format);
+          } else {
+            this.date = new Date(newDate);
+          }
+          this.set();
+
+          this.viewDate = new Date(this.date.getFullYear(),
+            this.date.getMonth(), 1, 0, 0, 0, 0);
+
+          this.fill();
+        };
+
+        Datepicker.prototype.place = function() {
+          var offset = this.component ?
+            this.component.offset() : this.$element.offset();
+          var $width = this.component ?
+            this.component.width() : this.$element.width();
+          var top = offset.top + this.height;
+          var left = offset.left;
+          var right = $doc.width() - offset.left - $width;
+          var isOutView = this.isOutView();
+          this.$picker.removeClass('am-datepicker-right');
+          this.$picker.removeClass('am-datepicker-up');
+          if ($doc.width() > 640) {
+            if (isOutView.outRight) {
+              this.$picker.addClass('am-datepicker-right');
+              this.$picker.css({
+                top: top,
+                left: 'auto',
+                right: right
+              });
+              return;
+            }
+            if (isOutView.outBottom) {
+              this.$picker.addClass('am-datepicker-up');
+              top = offset.top - this.$picker.outerHeight(true);
+            }
+          } else {
+            left = 0;
+          }
+          this.$picker.css({
+            top: top,
+            left: left
+          });
+        };
+
+        Datepicker.prototype.update = function(newDate) {
+          this.date = DPGlobal.parseDate(
+            typeof newDate === 'string' ? newDate : (this.isInput ?
+              this.$element.prop('value') : this.$element.data('date')),
+            this.format
+          );
+          this.viewDate = new Date(this.date.getFullYear(),
+            this.date.getMonth(), 1, 0, 0, 0, 0);
+          this.fill();
+        };
+
+        // Days of week
+        Datepicker.prototype.fillDow = function() {
+          var dowCount = this.weekStart;
+          var html = '<tr>';
+          while (dowCount < this.weekStart + 7) {
+            // NOTE: do % then add 1
+            html += '<th class="am-datepicker-dow">' +
+              Datepicker.locales[this.language].daysMin[(dowCount++) % 7] +
+              '</th>';
+          }
+          html += '</tr>';
+
+          this.$picker.find('.am-datepicker-days thead').append(html);
+        };
+
+        Datepicker.prototype.fillMonths = function() {
+          var html = '';
+          var i = 0;
+          while (i < 12) {
+            html += '<span class="am-datepicker-month">' +
+              Datepicker.locales[this.language].monthsShort[i++] +
+              '</span>';
+          }
+          this.$picker.find('.am-datepicker-months td').append(html);
+        };
+
+        Datepicker.prototype.fill = function() {
+          var d = new Date(this.viewDate);
+          var year = d.getFullYear();
+          var month = d.getMonth();
+          var currentDate = this.date.valueOf();
+
+          var prevMonth = new Date(year, month - 1, 28, 0, 0, 0, 0);
+          var day = DPGlobal
+            .getDaysInMonth(prevMonth.getFullYear(), prevMonth.getMonth());
+
+          var daysSelect = this.$picker
+            .find('.am-datepicker-days .am-datepicker-select');
+
+          if (this.language === 'zh_CN') {
+            daysSelect.text(year + Datepicker.locales[this.language].year[0] +
+              ' ' + Datepicker.locales[this.language].months[month]);
+          } else {
+            daysSelect.text(Datepicker.locales[this.language].months[month] +
+              ' ' + year);
+          }
+
+          prevMonth.setDate(day);
+          prevMonth.setDate(day - (prevMonth.getDay() - this.weekStart + 7) %
+            7);
+
+          var nextMonth = new Date(prevMonth);
+          nextMonth.setDate(nextMonth.getDate() + 42);
+          nextMonth = nextMonth.valueOf();
+          var html = [];
+
+          var className;
+          var prevY;
+          var prevM;
+
+          while (prevMonth.valueOf() < nextMonth) {
+            if (prevMonth.getDay() === this.weekStart) {
+              html.push('<tr>');
+            }
+            className = this.onRender(prevMonth);
+            prevY = prevMonth.getFullYear();
+            prevM = prevMonth.getMonth();
+            if ((prevM < month && prevY === year) || prevY < year) {
+              className += ' am-datepicker-old';
+            } else if ((prevM > month && prevY === year) || prevY > year) {
+              className += ' am-datepicker-new';
+            }
+            if (prevMonth.valueOf() === currentDate) {
+              className += ' am-active';
+            }
+            html.push('<td class="am-datepicker-day ' +
+              className + '">' + prevMonth.getDate() + '</td>');
+
+            if (prevMonth.getDay() === this.weekEnd) {
+              html.push('</tr>');
+            }
+            prevMonth.setDate(prevMonth.getDate() + 1);
+
+          }
+
+          this.$picker.find('.am-datepicker-days tbody')
+            .empty().append(html.join(''));
+
+          var currentYear = this.date.getFullYear();
+
+          var months = this.$picker.find('.am-datepicker-months')
+            .find('.am-datepicker-select')
+            .text(year);
+          months = months.end()
+            .find('span').removeClass('am-active');
+
+          if (currentYear === year) {
+            months.eq(this.date.getMonth()).addClass('am-active');
+          }
+
+          html = '';
+          year = parseInt(year / 10, 10) * 10;
+          var yearCont = this.$picker
+            .find('.am-datepicker-years')
+            .find('.am-datepicker-select')
+            .text(year + '-' + (year + 9))
+            .end()
+            .find('td');
+
+          year -= 1;
+          for (var i = -1; i < 11; i++) {
+            html += '<span class="' +
+              (i === -1 || i === 10 ? ' am-datepicker-old' : '') +
+              (currentYear === year ? ' am-active' : '') + '">' + year +
+              '</span>';
+            year += 1;
+          }
+          yearCont.html(html);
+        };
+
+        Datepicker.prototype.click = function(event) {
+          event.stopPropagation();
+          event.preventDefault();
+          var month;
+          var year;
+
+          var $target = $(event.target).closest('span, td, th');
+          if ($target.length === 1) {
+            switch ($target[0].nodeName.toLowerCase()) {
+              case 'th':
+                switch ($target[0].className) {
+                  case 'am-datepicker-switch':
+                    this.showMode(1);
+                    break;
+                  case 'am-datepicker-prev':
+                  case 'am-datepicker-next':
+                    this.viewDate['set' + DPGlobal.modes[this.viewMode].navFnc]
+                      .call(
+                        this.viewDate,
+                        this.viewDate['get' + DPGlobal.modes[this.viewMode]
+                          .navFnc]
+                        .call(this.viewDate) +
+                        DPGlobal.modes[this.viewMode].navStep *
+                        ($target[0].className === 'am-datepicker-prev' ? -1 :
+                          1)
+                    );
+                    this.fill();
+                    this.set();
+                    break;
+                }
+                break;
+              case 'span':
+                if ($target.is('.am-datepicker-month')) {
+                  month = $target.parent().find('span').index($target);
+                  this.viewDate.setMonth(month);
+                } else {
+                  year = parseInt($target.text(), 10) || 0;
+                  this.viewDate.setFullYear(year);
+                }
+
+                if (this.viewMode !== 0) {
+                  this.date = new Date(this.viewDate);
+                  this.$element.trigger({
+                    type: 'changeDate.datepicker.amui',
+                    date: this.date,
+                    viewMode: DPGlobal.modes[this.viewMode].clsName
+                  });
+                }
+
+                this.showMode(-1);
+                this.fill();
+                this.set();
+                break;
+              case 'td':
+                if ($target.is('.am-datepicker-day') && !$target.is(
+                  '.am-disabled')) {
+                  var day = parseInt($target.text(), 10) || 1;
+                  month = this.viewDate.getMonth();
+                  if ($target.is('.am-datepicker-old')) {
+                    month -= 1;
+                  } else if ($target.is('.am-datepicker-new')) {
+                    month += 1;
+                  }
+                  year = this.viewDate.getFullYear();
+                  this.date = new Date(year, month, day, 0, 0, 0, 0);
+                  this.viewDate = new Date(year, month, Math.min(28, day),
+                    0, 0, 0, 0);
+                  this.fill();
+                  this.set();
+                  this.$element.trigger({
+                    type: 'changeDate.datepicker.amui',
+                    date: this.date,
+                    viewMode: DPGlobal.modes[this.viewMode].clsName
+                  });
+
+                  this.options.autoClose && this.close();
+                }
+                break;
+            }
+          }
+        };
+
+        Datepicker.prototype.mousedown = function(event) {
+          event.stopPropagation();
+          event.preventDefault();
+        };
+
+        Datepicker.prototype.showMode = function(dir) {
+          if (dir) {
+            this.viewMode = Math.max(this.minViewMode,
+              Math.min(2, this.viewMode + dir));
+          }
+
+          this.$picker.find('>div').hide().
+          filter('.am-datepicker-' + DPGlobal.modes[this.viewMode].clsName)
+            .show();
+        };
+
+        Datepicker.prototype.isOutView = function() {
+          var offset = this.component ?
+            this.component.offset() : this.$element.offset();
+          var isOutView = {
+            outRight: false,
+            outBottom: false
+          };
+          var $picker = this.$picker;
+          var width = offset.left + $picker.outerWidth(true);
+          var height = offset.top + $picker.outerHeight(true) +
+            this.$element.innerHeight();
+
+          if (width > $doc.width()) {
+            isOutView.outRight = true;
+          }
+          if (height > $doc.height()) {
+            isOutView.outBottom = true;
+          }
+          return isOutView;
+        };
+
+        Datepicker.prototype.getLocale = function(locale) {
+          if (!locale) {
+            locale = navigator.language && navigator.language.split('-');
+            locale[1] = locale[1].toUpperCase();
+            locale = locale.join('_');
+          }
+
+          if (!Datepicker.locales[locale]) {
+            locale = 'en_US';
+          }
+          return locale;
+        };
+
+        Datepicker.prototype.setTheme = function() {
+          if (this.theme) {
+            this.$picker.addClass('am-datepicker-' + this.theme);
+          }
+        };
+
+        // Datepicker locales
         Datepicker.locales = {
           en_US: {
-            days: ['Sunday', 'Monday', 'Tuesday', 'Wednesday',
-              'Thursday', 'Friday', 'Saturday'
+            days: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday',
+              'Friday', 'Saturday'
             ],
-
             daysShort: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
             daysMin: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
-
             months: ['January', 'February', 'March', 'April', 'May', 'June',
               'July', 'August', 'September', 'October', 'November',
               'December'
             ],
-
             monthsShort: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
               'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
-            ]
+            ],
+            weekStart: 0
           },
           zh_CN: {
             days: ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'],
             daysShort: ['周日', '周一', '周二', '周三', '周四', '周五', '周六'],
             daysMin: ['日', '一', '二', '三', '四', '五', '六'],
-
             months: ['一月', '二月', '三月', '四月', '五月', '六月', '七月',
               '八月', '九月', '十月', '十一月', '十二月'
             ],
-
             monthsShort: ['一月', '二月', '三月', '四月', '五月', '六月',
               '七月', '八月', '九月', '十月', '十一月', '十二月'
             ],
+            weekStart: 1,
             year: ['年']
           }
         };
@@ -3508,15 +3510,18 @@
             navFnc: 'FullYear',
             navStep: 10
           }],
+
           isLeapYear: function(year) {
             return (((year % 4 === 0) && (year % 100 !== 0)) || (year %
               400 === 0));
           },
+
           getDaysInMonth: function(year, month) {
             return [31, (DPGlobal.isLeapYear(year) ? 29 : 28),
               31, 30, 31, 30, 31, 31, 30, 31, 30, 31
             ][month];
           },
+
           parseFormat: function(format) {
             var separator = format.match(/[.\/\-\s].*?/);
             var parts = format.split(/\W+/);
@@ -3524,11 +3529,13 @@
             if (!separator || !parts || parts.length === 0) {
               throw new Error('Invalid date format.');
             }
+
             return {
               separator: separator,
               parts: parts
             };
           },
+
           parseDate: function(date, format) {
             var parts = date.split(format.separator);
             var val;
@@ -3571,6 +3578,7 @@
             }
             return date;
           },
+
           formatDate: function(date, format) {
             var val = {
               d: date.getDate(),
@@ -3588,6 +3596,7 @@
             }
             return dateArray.join(format.separator);
           },
+
           headTemplate: '<thead>' +
             '<tr class="am-datepicker-header">' +
             '<th class="am-datepicker-prev">' +
@@ -3596,6 +3605,7 @@
             '<div class="am-datepicker-select"></div></th>' +
             '<th class="am-datepicker-next"><i class="am-datepicker-next-icon"></i>' +
             '</th></tr></thead>',
+
           contTemplate: '<tbody><tr><td colspan="7"></td></tr></tbody>'
         };
 
@@ -3628,9 +3638,8 @@
             var data = $this.data('amui.datepicker');
 
             var options = $.extend({},
-              UI.utils.options($this.data('data-am-datepicker')),
+              UI.utils.options($this.data('amDatepicker')),
               typeof option === 'object' && option);
-
             if (!data) {
               $this.data('amui.datepicker', (data = new Datepicker(this,
                 options)));
@@ -3680,7 +3689,7 @@
 
           this.inited = false;
           this.scrollbarWidth = 0;
-          this.used = $([]);
+          this.$used = $([]);
         };
 
         Dimmer.DEFAULTS = {
@@ -3706,12 +3715,12 @@
 
           // 用于多重调用
           if (relatedElement) {
-            this.used = this.used.add($(relatedElement));
+            this.$used = this.$used.add($(relatedElement));
           }
 
           this.checkScrollbar().setScrollbar();
 
-          $element.show().trigger('open.dimmer.amui');
+          $element.off(transition.end).show().trigger('open.dimmer.amui');
 
           setTimeout(function() {
             $element.addClass('am-active');
@@ -3721,9 +3730,9 @@
         };
 
         Dimmer.prototype.close = function(relatedElement, force) {
-          this.used = this.used.not($(relatedElement));
+          this.$used = this.$used.not($(relatedElement));
 
-          if (!force && this.used.length) {
+          if (!force && this.$used.length) {
             return this;
           }
 
@@ -3732,12 +3741,12 @@
           $element.removeClass('am-active').trigger('close.dimmer.amui');
 
           function complete() {
-            this.resetScrollbar();
             $element.hide();
+            this.resetScrollbar();
           }
 
-          transition ? $element.one(transition.end, $.proxy(complete, this)) :
-            complete.call(this);
+          // transition ? $element.one(transition.end, $.proxy(complete, this)) :
+          complete.call(this);
 
           return this;
         };
@@ -3951,7 +3960,10 @@
           // triggers = this.options.trigger.split(' '),
           var $toggle = this.$toggle;
 
-          $toggle.on('click.' + eventNS, $.proxy(this.toggle, this));
+          $toggle.on('click.' + eventNS, $.proxy(function(e) {
+            e.preventDefault();
+            this.toggle();
+          }, this));
 
           /*for (var i = triggers.length; i--;) {
    var trigger = triggers[i];
@@ -6931,7 +6943,8 @@
           var $element = this.$element;
           var $bar = $element.find('.am-offcanvas-bar').first();
 
-          if (!$element.length || !$element.hasClass('am-active')) {
+          if (!$element.length || !this.active || !$element.hasClass(
+            'am-active')) {
             return;
           }
 
@@ -7001,7 +7014,8 @@
             if (!data) {
               $this.data('amui.offcanvas', (data = new OffCanvas(this,
                 options)));
-              data.open(relatedElement);
+              (!option || typeof option == 'object') && data.open(
+                relatedElement);
             }
 
             if (typeof option == 'string') {
@@ -7035,7 +7049,7 @@
         "undefined" ? self : typeof window !== "undefined" ? window : {})
     }, {
       "./core": 4,
-      "./util.hammer": 50
+      "./util.hammer": 51
     }
   ],
   34: [
@@ -8597,6 +8611,9 @@
 
           shareBtn: false,
 
+          // press to toggle Toolbar
+          toggleToolbar: true,
+
           // 从何处获取图片，img 可以使用 data-rel 指定大图
           target: 'img',
 
@@ -8668,15 +8685,15 @@
             _this.close();
           });
 
-          this.$slider.hammer().on('press.pureview.amui', function(e) {
-            e.preventDefault();
-            _this.toggleToolBar();
-          }).on('swipeleft.pureview.amui', function(e) {
+          this.$slider.hammer().on('swipeleft.pureview.amui', function(e) {
             e.preventDefault();
             _this.nextSlide();
           }).on('swiperight.pureview.amui', function(e) {
             e.preventDefault();
             _this.prevSlide();
+          }).on('press.pureview.amui', function(e) {
+            e.preventDefault();
+            options.toggleToolbar && _this.toggleToolBar();
           });
 
           this.$slider.data('hammer').get('swipe').set({
@@ -8696,7 +8713,11 @@
           // NOTE:
           // trigger this event manually if MutationObserver not supported
           //   when new images appended, or call refreshSlides()
-          $element.on('changed.dom.amui', $.proxy(this.refreshSlides, _this));
+          // if (!UI.support.mutationobserver) $element.trigger('changed.dom.amui')
+          $element.on('changed.dom.amui', function(e) {
+            e.stopPropagation();
+            _this.refreshSlides();
+          });
 
           $(document).on('keydown.pureview.amui', $.proxy(function(e) {
             var keyCode = e.keyCode;
@@ -8792,7 +8813,7 @@
           var options = this.options;
           var $slides = this.$slides;
           var activeIndex = $slides.index($slide);
-          var alt = $slide.find('img').attr('alt') || '';
+          var title = $slide.data('title') || '';
           var active = options.className.active;
 
           if ($slides.find('.' + active).is($slide)) {
@@ -8811,7 +8832,7 @@
 
           this.transitioning = 1;
 
-          this.$title.text(alt);
+          this.$title.text(title);
           this.$current.text(activeIndex + 1);
           $slides.removeClass();
           $slide.addClass(active);
@@ -8961,7 +8982,7 @@
     }, {
       "./core": 4,
       "./ui.pinchzoom": 34,
-      "./util.hammer": 50
+      "./util.hammer": 51
     }
   ],
   38: [
@@ -9141,7 +9162,8 @@
             active: 'am-active'
           },
           closest: false,
-          smooth: true
+          smooth: true,
+          offsetTop: 0
         };
 
         ScrollSpyNav.prototype.process = function() {
@@ -9189,9 +9211,10 @@
 
         ScrollSpyNav.prototype.scrollProcess = function() {
           var $links = this.$links;
+          var options = this.options;
 
           // smoothScroll
-          if (this.options.smooth) {
+          if (options.smooth) {
             $links.on('click', function(e) {
               e.preventDefault();
 
@@ -9202,8 +9225,12 @@
                 return;
               }
 
+              var offsetTop = options.offsetTop &&
+                !isNaN(parseInt(options.offsetTop)) && parseInt(options.offsetTop) ||
+                0;
+
               $(window).smoothScroll({
-                position: $target.offset().top
+                position: $target.offset().top - offsetTop
               });
             });
           }
@@ -9233,8 +9260,7 @@
         UI.ready(function(context) {
           $('[data-am-scrollspy-nav]', context).each(function() {
             var $this = $(this);
-            var options = UI.utils.options($this.attr(
-              'data-am-scrollspy-nav'));
+            var options = UI.utils.options($this.data('amScrollspyNav'));
 
             Plugin.call($this, options);
           });
@@ -9293,17 +9319,21 @@
           btnWidth: null,
           btnSize: null,
           btnStyle: 'default',
+          dropUp: 0,
           maxHeight: null,
           noSelectedText: '点击选择...',
           selectedClass: 'am-checked',
           searchBox: false,
-          tpl: '<div class="am-selected am-dropdown" id="<%= id %>" data-am-dropdown>' +
-            '  <button class="am-selected-btn am-btn am-dropdown-toggle">' +
+          tpl: '<div class="am-selected am-dropdown ' +
+            '<%= dropUp ? \'am-dropdown-up\': \'\' %>" id="<%= id %>" data-am-dropdown>' +
+            '  <button type="button" class="am-selected-btn am-btn am-dropdown-toggle">' +
             '    <span class="am-selected-status am-fl"></span>' +
-            '    <i class="am-selected-icon am-icon-caret-down"></i>' +
+            '    <i class="am-selected-icon am-icon-caret-' +
+            '<%= dropUp ? \'up\' : \'down\' %>"></i>' +
             '  </button>' +
             '  <div class="am-selected-content am-dropdown-content">' +
-            '    <h2 class="am-selected-header"><span class="am-icon-chevron-left">返回</span></h2>' +
+            '    <h2 class="am-selected-header">' +
+            '<span class="am-icon-chevron-left">返回</span></h2>' +
             '   <% if (searchBox) { %>' +
             '   <div class="am-selected-search">' +
             '     <input type="text" autocomplete="off" class="am-form-field" />' +
@@ -9313,7 +9343,7 @@
             '      <% for (var i = 0; i < options.length; i++) { %>' +
             '       <% var option = options[i] %>' +
             '       <% if (option.header) { %>' +
-            '       <li data-group="<%= option.group %>" class="am-selected-list-header">' +
+            '  <li data-group="<%= option.group %>" class="am-selected-list-header">' +
             '       <%= option.text %></li>' +
             '       <% } else { %>' +
             '       <li class=<%= option.active %> ' +
@@ -9373,7 +9403,8 @@
             id: UI.utils.generateGUID('am-selected'),
             multiple: $element.get(0).multiple,
             options: optionItems,
-            searchBox: options.searchBox
+            searchBox: options.searchBox,
+            dropUp: options.dropUp
           };
 
           this.$selector = $(this.render(data));
@@ -9532,6 +9563,7 @@
             var data = $this.data('amui.selected');
             var options = $.extend({}, UI.utils.parseOptions($this.data(
                 'amSelected')),
+              UI.utils.parseOptions($this.data('amSelectit')),
               typeof option === 'object' && option);
 
             if (!data && option === 'destroy') {
@@ -9549,10 +9581,13 @@
           });
         }
 
-        $.fn.selected = Plugin;
+        // Conflict with jQuery form
+        // https://github.com/malsup/form/blob/6bf24a5f6d8be65f4e5491863180c09356d9dadd/jquery.form.js#L1240-L1258
+        // https://github.com/allmobilize/amazeui/issues/379
+        $.fn.selected = $.fn.selectIt = Plugin;
 
         UI.ready(function(context) {
-          $('[data-am-selected]', context).selected();
+          $('[data-am-selected]', context).selectIt();
         });
 
         $.AMUI.selected = Selected;
@@ -9894,9 +9929,9 @@
               '<div class="am-share-wx-qr"></div>' +
               '<div class="am-share-wechat-tip">' +
               '打开微信，点击底部的<em>发现</em>，<br/> ' +
-              '使用<em>扫一扫</em>将网页分享至朋友圈</div></div></div></div>', {
-                id: qrId
-              });
+              '使用<em>扫一扫</em>将网页分享至朋友圈</div></div></div></div>');
+
+            $qr.attr('id', qrId);
 
             var qrNode = new QRCode({
               render: 'canvas',
@@ -9935,7 +9970,7 @@
     }, {
       "./core": 4,
       "./ui.modal": 32,
-      "./util.qrcode": 51
+      "./util.qrcode": 52
     }
   ],
   42: [
@@ -10558,7 +10593,7 @@
         "undefined" ? self : typeof window !== "undefined" ? window : {})
     }, {
       "./core": 4,
-      "./util.hammer": 50
+      "./util.hammer": 51
     }
   ],
   45: [
@@ -10754,25 +10789,29 @@
             var options = this.options;
             var $field = $(validity.field);
             var $parent = $field.closest('.am-form-group');
-            $field.addClass(options.validClass).
-            removeClass(options.inValidClass);
 
+            $field.addClass(options.validClass).removeClass(options.inValidClass);
             $parent.addClass('am-form-success').removeClass('am-form-error');
-
             options.onValid.call(this, validity);
           },
+
           markInValid: function(validity) {
             var options = this.options;
             var $field = $(validity.field);
             var $parent = $field.closest('.am-form-group');
+
             $field.addClass(options.inValidClass + ' ' + options.activeClass)
               .
             removeClass(options.validClass);
-
             $parent.addClass('am-form-error').removeClass('am-form-success');
-
             options.onInValid.call(this, validity);
-          }
+          },
+
+          validate: function(validity) {
+            // return validity;
+          },
+
+          submit: null
         };
 
         /* jshint -W101 */
@@ -10844,7 +10883,13 @@
           });
 
           $element.submit(function(e) {
-            return _this.isFormValid();
+            if (typeof options.submit === 'function') {
+              return options.submit.call(_this, e);
+            }
+
+            if (options.validateOnSubmit) {
+              return _this.isFormValid();
+            }
           });
 
           function bindEvents(fields, eventFlags, debounce) {
@@ -10877,7 +10922,7 @@
           if ($field.data('validity') === undefined) {
             this.validate(field);
           }
-          return $field.data('validity').valid;
+          return $field.data('validity') && $field.data('validity').valid;
         };
 
         Validator.prototype.validate = function(field) {
@@ -10885,6 +10930,13 @@
           var $element = this.$element;
           var options = this.options;
           var $field = $(field);
+
+          // Validate equal, e.g. confirm password
+          var equalTo = $field.data('equalTo');
+          if (equalTo) {
+            $field.attr('pattern', '^' + $element.find(equalTo).val() + '$');
+          }
+
           var pattern = $field.attr('pattern') || false;
           var re = new RegExp(pattern);
           var $radioGroup = null;
@@ -10913,9 +10965,9 @@
 
           // Debug
           if (options.debug && window.console) {
-            console.log('Validate called on "' + value + '" with regex "' +
+            console.log('Validate: value -> [' + value + ', regex -> [' +
               re +
-              '". Required: ' + required);
+              '], required -> ' + required);
             console.log('Regex test: ' + re.test(value) + ', Pattern: ' +
               pattern);
           }
@@ -10978,24 +11030,41 @@
             validity.patternMismatch = true;
           }
 
-          var markField = function(validity) {
-            var flag = 'mark' + (validity.valid ? '' : 'In') + 'Valid';
-            options[flag] && options[flag].call(_this, validity);
+          var validateComplete = function(validity) {
+            this.markField(validity);
+
+            $field.trigger('validated.field.validator.amui', validity).
+            data('validity', validity);
+
+            // validate the radios/checkboxes with the same name
+            var $fields = $radioGroup || $checkboxGroup;
+            if ($fields) {
+              $fields.not($field).data('validity', validity).each(
+                function() {
+                  validity.field = this;
+                  _this.markField(validity);
+                });
+            }
           };
 
-          markField(validity);
+          // Run custom validate
+          var customValidate;
+          (typeof options.validate === 'function') &&
+            (customValidate = options.validate.call(this, validity));
 
-          $field.trigger('validated.field.validator.amui', validity).
-          data('validity', validity);
-
-          // validate the radios/checkboxes with the same name
-          var $fields = $radioGroup || $checkboxGroup;
-          if ($fields) {
-            $fields.not($field).data('validity', validity).each(function() {
-              validity.field = this;
-              markField(validity);
+          if (customValidate) {
+            return $.when(customValidate).always(function(validity) {
+              validateComplete.call(_this, validity);
             });
           }
+
+          validateComplete.call(this, validity);
+        };
+
+        Validator.prototype.markField = function(validity) {
+          var options = this.options;
+          var flag = 'mark' + (validity.valid ? '' : 'In') + 'Valid';
+          options[flag] && options[flag].call(this, validity);
         };
 
         // check all fields in the form are valid
@@ -12025,7 +12094,7 @@
         /**
          * @via https://github.com/sindresorhus/screenfull.js
          * @license MIT © Sindre Sorhus
-         * @version 1.2.1
+         * @version 2.0.0
          */
 
         var keyboardAllowed = typeof Element !== 'undefined' &&
@@ -12099,7 +12168,7 @@
           return false;
         })();
 
-        var fullscreen = {
+        var screenfull = {
           request: function(elem) {
             var request = fn.requestFullscreen;
 
@@ -12125,8 +12194,6 @@
               this.request(elem);
             }
           },
-          onchange: function() {},
-          onerror: function() {},
           raw: fn
         };
 
@@ -12135,7 +12202,7 @@
           return;
         }
 
-        Object.defineProperties(fullscreen, {
+        Object.defineProperties(screenfull, {
           isFullscreen: {
             get: function() {
               return !!document[fn.fullscreenElement];
@@ -12156,17 +12223,11 @@
           }
         });
 
-        document.addEventListener(fn.fullscreenchange, function(e) {
-          fullscreen.onchange.call(fullscreen, e);
-        });
+        screenfull.VERSION = '2.0.0';
 
-        document.addEventListener(fn.fullscreenerror, function(e) {
-          fullscreen.onerror.call(fullscreen, e);
-        });
+        $.AMUI.fullscreen = screenfull;
 
-        $.AMUI.fullscreen = fullscreen;
-
-        module.exports = fullscreen;
+        module.exports = screenfull;
 
       }).call(this, typeof global !== "undefined" ? global : typeof self !==
         "undefined" ? self : typeof window !== "undefined" ? window : {})
@@ -12175,6 +12236,93 @@
     }
   ],
   50: [
+    function(require, module, exports) {
+      (function(global) {
+        'use strict';
+
+        var $ = (typeof window !== "undefined" ? window.jQuery : typeof global !==
+          "undefined" ? global.jQuery : null);
+        var UI = require('./core');
+        UI.support.geolocation = window.navigator && window.navigator.geolocation;
+
+        var geo = UI.support.geolocation;
+
+        var Geolocation = function(options) {
+          this.options = options || {};
+        };
+
+        Geolocation.MESSAGES = {
+          unsupportedBrowser: 'Browser does not support location services',
+          permissionDenied: 'You have rejected access to your location',
+          positionUnavailable: 'Unable to determine your location',
+          timeout: 'Service timeout has been reached'
+        };
+
+        Geolocation.ERROR_CODE = {
+          0: 'unsupportedBrowser',
+          1: 'permissionDenied',
+          2: 'positionUnavailable',
+          3: 'timeout'
+        };
+
+        Geolocation.prototype.get = function(options) {
+          var _this = this;
+          options = $.extend({}, this.options, options);
+          var deferred = new $.Deferred();
+
+          if (geo) {
+            this.watchID = geo.getCurrentPosition(function(position) {
+              deferred.resolve.call(_this, position);
+            }, function(error) {
+              deferred.reject(Geolocation.MESSAGES[Geolocation.ERROR_CODE[
+                error.code]]);
+            }, options);
+          } else {
+            deferred.reject(Geolocation.MESSAGES.unsupportedBrowser);
+          }
+
+          return deferred.promise();
+        };
+
+        Geolocation.prototype.watch = function(options) {
+          if (!geo) {
+            return;
+          }
+
+          options = $.extend({}, this.options, options);
+
+          if (!$.isFunction(options.done)) {
+            return;
+          }
+
+          this.clearWatch();
+
+          var fail = $.isFunction(options.fail) ? options.fail : null;
+
+          this.watchID = geo.watchPosition(options.done, fail, options);
+
+          return this.watchID;
+        };
+
+        Geolocation.prototype.clearWatch = function() {
+          if (!geo || !this.watchID) {
+            return;
+          }
+          geo.clearWatch(this.watchID);
+          this.watchID = null;
+        };
+
+        $.AMUI.Geolocation = Geolocation;
+
+        module.exports = Geolocation;
+
+      }).call(this, typeof global !== "undefined" ? global : typeof self !==
+        "undefined" ? self : typeof window !== "undefined" ? window : {})
+    }, {
+      "./core": 4
+    }
+  ],
+  51: [
     function(require, module, exports) {
       (function(global) {
         /*! Hammer.JS - v2.0.4 - 2014-09-28
@@ -14746,7 +14894,7 @@
       "./core": 4
     }
   ],
-  51: [
+  52: [
     function(require, module, exports) {
       (function(global) {
         var $ = (typeof window !== "undefined" ? window.jQuery : typeof global !==
@@ -17353,7 +17501,7 @@
       "./core": 4
     }
   ],
-  52: [
+  53: [
     function(require, module, exports) {
       (function(global) {
         'use strict';
@@ -17492,6 +17640,80 @@
         $.AMUI.store = store;
 
         module.exports = store;
+
+      }).call(this, typeof global !== "undefined" ? global : typeof self !==
+        "undefined" ? self : typeof window !== "undefined" ? window : {})
+    }, {
+      "./core": 4
+    }
+  ],
+  54: [
+    function(require, module, exports) {
+      (function(global) {
+        'use strict';
+
+        var $ = (typeof window !== "undefined" ? window.jQuery : typeof global !==
+          "undefined" ? global.jQuery : null);
+        var UI = require('./core');
+
+        var isWeChat = window.navigator.userAgent.indexOf('MicroMessenger') >
+          -1;
+
+        function appendWeChatSDK(callback) {
+          var $weChatSDK = $('<script/>', {
+            id: 'wechat-sdk'
+          });
+
+          $('body').append($weChatSDK);
+
+          $weChatSDK.on('load', function() {
+            callback && callback();
+          }).attr('src', 'http://res.wx.qq.com/open/js/jweixin-1.0.0.js');
+        }
+
+        function payHandler() {
+          var $paymentBtn = $('[data-am-widget="wechatpay"]');
+
+          if (!isWeChat) {
+            $paymentBtn.hide();
+            return false;
+          }
+
+          $paymentBtn.on('click', '.am-wechatpay-btn', function(e) {
+            e.preventDefault();
+            var options = UI.utils.parseOptions($(this).parent().data(
+              'wechatPay'));
+            // console.log(options);
+            // alert('pay button clicked');
+            if (!window.wx) {
+              alert('没有微信 JS SDK');
+              return;
+            }
+
+            wx.checkJsApi({
+              jsApiList: ['chooseWXPay'],
+              success: function(res) {
+                if (res.checkResult.chooseWXPay) {
+                  wx.chooseWXPay(options);
+                } else {
+                  alert('微信版本不支持支付接口或没有开启！');
+                }
+              },
+              fail: function() {
+                alert('调用 checkJsApi 接口时发生错误!');
+              }
+            });
+          });
+        }
+
+        var payInit = payHandler;
+
+        $(document).on('ready', payInit);
+
+        module.exports = $.AMUI.pay = {
+          VERSION: '1.0.0',
+          init: payInit
+        };
 
       }).call(this, typeof global !== "undefined" ? global : typeof self !==
         "undefined" ? self : typeof window !== "undefined" ? window : {})
