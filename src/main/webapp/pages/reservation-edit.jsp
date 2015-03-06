@@ -30,19 +30,28 @@ $(function(){
 	//获取选中选项的值 
     $("#getValue").click(function(){
         var val;
+        var customerName;
         $("[name='customer-id']").each(function(){ 
             if($(this).is(":checked")){
             	val = $(this).val(); 
+            	customerName = $(this).parent().next().text();
             }
         }); 
 
         $("[name='reservationVO.customerId']").val(val);
+        $("#customer-name").val(customerName);
     }); 
 
     selectChk();
     function selectChk (){
         var customerId = $("#hdn_customerId").val();
      	$("#radio_customer_id_"+customerId).attr("checked",true);
+    }
+
+    setCustomerName();
+    function setCustomerName() {
+		var tempCustomerName = $("#hdn_customerName").val();
+		$("#customer-name").val(tempCustomerName);
     }
 
     $('#datetimepicker-date').datetimepicker({
@@ -95,6 +104,7 @@ $(function(){
 		    	<fieldset>
 		    		<input type="hidden" name="reservationVO.id" value="${reservationVO.id}" />
 		    		<input type="hidden" id="hdn_customerId" name="reservationVO.customerId" value="${reservationVO.customerId}"/>
+		    		<input type="hidden" id="hdn_customerName" value="${customerName}"/>
 					<div class="am-g am-form-group">
 						<label for="plan-name" class="am-u-sm-2 am-form-label">日期</label>
 						<div class="am-u-sm-3">
@@ -142,11 +152,13 @@ $(function(){
 						<label class="am-u-sm-1 am-form-label">&nbsp;</label>
 						<label for="plan-items" class="am-u-sm-2 am-form-label">关联客户</label>
 			          	<div class="am-u-sm-3">
-			            	 <label class="am-form-label" style="font-weight:normal;">
-			            		<a href="#" data-am-modal="{target: '#my-popup'}"><span class="am-icon-search-plus" /></a>
-			            	</label> 
+			          		<input type="text" class="am-form-field am-input-sm" id="customer-name" readonly>
 			          	</div>
-			          	<label class="am-u-sm-1 am-form-label" style="color: red">* 必选</label>
+			          	<label class="am-u-sm-1 am-form-label">
+			          		<span class="am-input-group-label" style="background-color:#ffffff;border: 0px solid #cccccc;color:red;">
+			          			<a href="#" data-am-modal="{target: '#my-popup'}"><i class="am-icon-search-plus"></i></a>* 必选
+			          		</span>
+			          	</label>
 			        </div>
 			        
 					<div class="am-popup" id="my-popup">

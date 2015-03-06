@@ -31,13 +31,17 @@ $(function(){
         var i = 0; 
         $("[name='item-id']").each(function(){ 
             if($(this).is(":checked")){
+            	var itemName = $(this).parent().next().text();
             	valArr[i] = $(this).val(); 
+            	nameArr[i] = itemName;
 	            i++;
             }
         }); 
         var vals = valArr.join(','); 
+        var names = nameArr.join('，');
 
         $("[name='itemIds']").val(vals);
+        $("#item-names").html(names);
     }); 
     
 	selectChk();
@@ -47,6 +51,12 @@ $(function(){
         $.each(planItemIdsArr,function(i,n){
        		$("#chk_item_id_"+n).attr("checked",true);
         });
+    }
+
+    setItems();
+    function setItems() {
+		var itemNames = $("#hdn_itemNames").val();
+		$("#item-names").html(itemNames);
     }
     
 });
@@ -78,8 +88,11 @@ $(function(){
 		    	<form id="fm1" class="am-form am-form-horizontal" action="editPlan" method="post" data-am-validator>
 		    	<fieldset>
 		    		<input type="hidden" name="planVO.id" value="${planVO.id}" />
+		    		<input type="hidden" name="planVO.name" value="${planVO.name}" />
 		    		<input type="hidden" name="itemIds" />
 		    		<input type="hidden" id="hdn_planItemIds" name="planItemIds" value="${planItemIds}"/>
+		    		<input type="hidden" id="hdn_itemNames" value="${itemNames}"/>
+		    		
 					<div class="am-g am-form-group">
 						<label for="plan-name" class="am-u-sm-2 am-form-label">方案名称</label>
 						<div class="am-u-sm-3">
@@ -97,16 +110,13 @@ $(function(){
 					<div class="am-g am-form-group am-form-select">
 						<label for="plan-items" class="am-u-sm-2 am-form-label">关联项目</label>
 			          	<div class="am-u-sm-3">
-			            	 <label class="am-form-label" style="font-weight:normal;">
-			            		<a href="#" data-am-modal="{target: '#my-popup'}"><span class="am-icon-search-plus" /></a>
-			            	</label> 
-			            	<!--<select multiple data-am-selected="{searchBox: 1}" minchecked="2">
-			            		<s:iterator var="item" value="itemList">
-							  	<option value="<s:property value='id'/>"><s:property value="name"/></option>
-							  	</s:iterator>
-							</select>-->
+			            	<textarea rows="4" cols="" class="am-form-field am-input-sm" id="item-names" readonly></textarea>
 			          	</div>
-			          	<label class="am-u-sm-1 am-form-label">&nbsp;</label>
+			          	<label class="am-u-sm-1 am-form-label">
+			          		<span class="am-input-group-label" style="background-color:#ffffff;border: 0px solid #cccccc;">
+			          			<a href="#" data-am-modal="{target: '#my-popup'}"><i class="am-icon-search-plus"></i></a>
+			          		</span>
+			          	</label>
 			          	<label class="am-u-sm-2 am-form-label">&nbsp;</label>
 						<div class="am-u-sm-3">&nbsp;</div>
 						<label class="am-u-sm-1 am-form-label">&nbsp;</label>

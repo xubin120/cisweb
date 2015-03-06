@@ -67,6 +67,7 @@ $(function(){
 	//获取客户
     $("#customer-getValue").click(function(){
         var val;
+        var customerName;
         $("[name='customer-id']").each(function(){ 
             if($(this).is(":checked")){
             	val = $(this).val(); 
@@ -174,28 +175,34 @@ $(function(){
 						<label class="am-u-sm-1 am-form-label" style="color: red">* 必选</label>
 						<label for="shop-customer" class="am-u-sm-2 am-form-label">客户</label>
 			          	<div class="am-u-sm-3">
-			            	<label class="am-form-label" style="font-weight:normal;">
-			            		<a href="#" data-am-modal="{target: '#my-customer'}"><span class="am-icon-search-plus" /></a>
-			            	</label> 
+			          		<input type="text" class="am-form-field am-input-sm" id="customer-name" readonly>
 			          	</div>
-						<label class="am-u-sm-1 am-form-label" style="color: red">* 必选</label>
+						<label class="am-u-sm-1 am-form-label">
+			          		<span class="am-input-group-label" style="background-color:#ffffff;border: 0px solid #cccccc;color:red;">
+			          			<a href="#" data-am-modal="{target: '#my-customer'}"><i class="am-icon-search-plus"></i></a>* 必选
+			          		</span>
+			          	</label>
 					</div>
 					
 					<div class="am-g am-form-group">
 						<label for="shop-employee" class="am-u-sm-2 am-form-label">美容师</label>
 						<div class="am-u-sm-3">
-			            	<label class="am-form-label" style="font-weight:normal;">
-			            		<a href="#" data-am-modal="{target: '#my-employee'}"><span class="am-icon-search-plus" /></a>
-			            	</label> 
+							<input type="text" class="am-form-field am-input-sm" id="employee-name" readonly>
 			          	</div>
-						<label class="am-u-sm-1 am-form-label" style="color: red">* 必选</label>
+						<label class="am-u-sm-1 am-form-label">
+			          		<span class="am-input-group-label" style="background-color:#ffffff;border: 0px solid #cccccc;color:red;">
+			          			<a href="#" data-am-modal="{target: '#my-employee'}"><i class="am-icon-search-plus"></i></a>* 必选
+			          		</span>
+			          	</label>
 						<label for="shop-item" class="am-u-sm-2 am-form-label">项目</label>
 						<div class="am-u-sm-3">
-							<label class="am-form-label" style="font-weight:normal;">
-			            		<a href="#" data-am-modal="{target: '#my-item'}"><span class="am-icon-search-plus" /></a>
-			            	</label> 
+							<input type="text" class="am-form-field am-input-sm" id="item-name" readonly>
 						</div>
-						<label class="am-u-sm-1 am-form-label" style="color: red">* 必选</label>
+						<label class="am-u-sm-1 am-form-label">
+			          		<span class="am-input-group-label" style="background-color:#ffffff;border: 0px solid #cccccc;color:red;">
+			          			<a href="#" data-am-modal="{target: '#my-item'}"><i class="am-icon-search-plus"></i></a>* 必选
+			          		</span>
+			          	</label>
 					</div>
 					
 					<div class="am-g am-form-group am-form-select">

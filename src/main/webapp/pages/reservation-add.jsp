@@ -30,14 +30,17 @@ $(function(){
 	//获取选中选项的值 
     $("#getValue").click(function(){
         var val;
+        var customerName;
         $("[name='customer-id']").each(function(){ 
             if($(this).is(":checked")){
             	val = $(this).val(); 
+            	customerName = $(this).parent().next().text();
             }
         }); 
         //alert(val); 
 
         $("[name='reservationVO.customerId']").val(val);
+        $("#customer-name").val(customerName);
         //alert($("[name='itemIds']").val());
     }); 
 
@@ -137,11 +140,13 @@ $(function(){
 						<label class="am-u-sm-1 am-form-label">&nbsp;</label>
 						<label for="plan-items" class="am-u-sm-2 am-form-label">关联客户</label>
 			          	<div class="am-u-sm-3">
-			            	 <label class="am-form-label" style="font-weight:normal;" required>
-			            		<a href="#" data-am-modal="{target: '#my-popup'}"><span class="am-icon-search-plus" /></a>
-			            	</label> 
+			            	<input type="text" class="am-form-field am-input-sm" id="customer-name" readonly>
 			          	</div>
-			          	<label class="am-u-sm-1 am-form-label" style="color: red">* 必选</label>
+			          	<label class="am-u-sm-1 am-form-label">
+			          		<span class="am-input-group-label" style="background-color:#ffffff;border: 0px solid #cccccc;color:red;">
+			          			<a href="#" data-am-modal="{target: '#my-popup'}"><i class="am-icon-search-plus"></i></a>* 必选
+			          		</span>
+			          	</label>
 			        </div>
 			        
 					<div class="am-popup" id="my-popup">

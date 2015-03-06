@@ -31,14 +31,18 @@ $(function(){
         var i = 0; 
         $("[name='item-id']").each(function(){ 
             if($(this).is(":checked")){
+                var itemName = $(this).parent().next().text();
             	valArr[i] = $(this).val(); 
+            	nameArr[i] = itemName;
 	            i++;
             }
         }); 
         var vals = valArr.join(','); 
-        //alert(vals); 
+        var names = nameArr.join('，');
+        //alert(names); 
 
         $("[name='itemIds']").val(vals);
+        $("#item-names").html(names);
         //alert($("[name='itemIds']").val());
     }); 
 });
@@ -86,16 +90,13 @@ $(function(){
 					<div class="am-g am-form-group am-form-select">
 						<label for="plan-items" class="am-u-sm-2 am-form-label">关联项目</label>
 			          	<div class="am-u-sm-3">
-			            	 <label class="am-form-label" style="font-weight:normal;">
-			            		<a href="#" data-am-modal="{target: '#my-popup'}"><span class="am-icon-search-plus" /></a>
-			            	</label> 
-			            	<!--<select multiple data-am-selected="{searchBox: 1}" minchecked="2">
-			            		<s:iterator var="item" value="itemList">
-							  	<option value="<s:property value='id'/>"><s:property value="name"/></option>
-							  	</s:iterator>
-							</select>-->
+			          		<textarea rows="4" cols="" class="am-form-field am-input-sm" id="item-names" readonly></textarea>
 			          	</div>
-			          	<label class="am-u-sm-1 am-form-label">&nbsp;</label>
+			          	<label class="am-u-sm-1 am-form-label">
+			          		<span class="am-input-group-label" style="background-color:#ffffff;border: 0px solid #cccccc;">
+			          			<a href="#" data-am-modal="{target: '#my-popup'}"><i class="am-icon-search-plus"></i></a>
+			          		</span>
+			          	</label>
 			          	<label class="am-u-sm-2 am-form-label">&nbsp;</label>
 						<div class="am-u-sm-3">&nbsp;</div>
 						<label class="am-u-sm-1 am-form-label">&nbsp;</label>
@@ -121,7 +122,7 @@ $(function(){
 										<s:iterator var="item" value="itemList"> 
 										<tr>
 											<td><input type="checkbox" name="item-id" value="<s:property value='id'/> " /></td>
-											<td><s:property value="name"/></td>
+											<td id="item-name"><s:property value="name"/></td>
 											<td><s:property value="price"/></td>
 											<td><s:property value="description"/></td>
 										</tr>

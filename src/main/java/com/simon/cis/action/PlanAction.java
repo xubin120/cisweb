@@ -31,12 +31,14 @@ public class PlanAction extends ActionSupport {
     private static final long serialVersionUID = -656764640302594636L;
 
     private PlanVO planVO;
+    private ItemVO itemVO;
     private List<PlanVO> planList;
     private List<ItemVO> itemList;
     private PageInfo pi;
     private int currentPage = 1;
     private String planId;
     private String itemIds;
+    private String itemNames;
 
     private String planItemIds;
 
@@ -85,11 +87,18 @@ public class PlanAction extends ActionSupport {
         List<PlanItemVO> planItemList = planVO.getPlanItemList();
         if (!planItemList.isEmpty()) {
             StringBuffer sb = new StringBuffer();
+            StringBuffer itemNamesSb = new StringBuffer();
             for (PlanItemVO planItemVO : planItemList) {
-                sb.append(planItemVO.getItemId() + ",");
+                int planItemId = planItemVO.getItemId();
+                sb.append(planItemId + ",");
+                itemVO = itemDao.findById(planItemId);
+                itemNamesSb.append(itemVO.getName() + ",");
             }
-            planItemIds = sb.toString();
-            planItemIds = planItemIds.substring(0, planItemIds.length() - 1);
+            String tempPlanItemIds = sb.toString();
+            setPlanItemIds(tempPlanItemIds.substring(0, tempPlanItemIds.length() - 1));
+            
+            String tempItemNames = itemNamesSb.toString();
+            setItemNames(tempItemNames.substring(0, tempItemNames.length() - 1));
         }
 
         String pageRecords = PropertiesUtil.getPropertyValue("pagerecords");
@@ -157,6 +166,14 @@ public class PlanAction extends ActionSupport {
         this.planVO = planVO;
     }
 
+    public ItemVO getItemVO() {
+        return itemVO;
+    }
+
+    public void setItemVO(ItemVO itemVO) {
+        this.itemVO = itemVO;
+    }
+
     public List<PlanVO> getPlanList() {
         return planList;
     }
@@ -203,5 +220,13 @@ public class PlanAction extends ActionSupport {
 
     public void setPlanItemIds(String planItemIds) {
         this.planItemIds = planItemIds;
+    }
+
+    public String getItemNames() {
+        return itemNames;
+    }
+
+    public void setItemNames(String itemNames) {
+        this.itemNames = itemNames;
     }
 }
