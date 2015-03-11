@@ -49,6 +49,12 @@ public class ShopAction extends ActionSupport {
     private PageInfo<?> api;
     private PageInfo<?> ppi;
     private PageInfo<?> ipi;
+    
+    private String customerName;
+    private String employeeName;
+    private String activityName;
+    private String planName;
+    private String itemName;
 
     @Autowired
     private ShopDao shopDao;
@@ -122,26 +128,45 @@ public class ShopAction extends ActionSupport {
         if (customerList != null) {
             cpi = new PageInfo(customerList);
         }
+        
+        CustomerVO customerVO = customerDao.findById(shopVO.getCustomerId());
+        this.setCustomerName(customerVO.getName());
+        
         //美容师
         employeeList = employeeDao.findAllEmployee(rb);
         if (employeeList != null) {
             epi = new PageInfo(employeeList);
         }
+        
+        EmployeeVO employeeVO = employeeDao.findById(shopVO.getEmployeeId());
+        this.setEmployeeName(employeeVO.getName());
+        
         //活动
         activityList = activityDao.findAllActivity(rb);
         if (activityList != null) {
             api = new PageInfo(activityList);
         }
+        
+        ActivityVO activityVO = activityDao.findById(shopVO.getActivityId());
+        this.setActivityName(activityVO.getName());
+        
         //方案
         planList = planDao.findAllPlan(rb);
         if (planList != null) {
             ppi = new PageInfo(planList);
         }
+        
+        PlanVO planVO = planDao.findById(shopVO.getPlanId());
+        this.setPlanName(planVO.getName());
+        
         //项目
         itemList = itemDao.findAllItem(rb);
         if (itemList != null) {
             ipi = new PageInfo(itemList);
         }
+        
+        ItemVO itemVO = itemDao.findById(shopVO.getItemId());
+        this.setItemName(itemVO.getName());
         
         return SUCCESS;
     }
@@ -289,6 +314,46 @@ public class ShopAction extends ActionSupport {
 
     public void setItemList(List<ItemVO> itemList) {
         this.itemList = itemList;
+    }
+
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
+    }
+
+    public String getEmployeeName() {
+        return employeeName;
+    }
+
+    public void setEmployeeName(String employeeName) {
+        this.employeeName = employeeName;
+    }
+
+    public String getActivityName() {
+        return activityName;
+    }
+
+    public void setActivityName(String activityName) {
+        this.activityName = activityName;
+    }
+
+    public String getPlanName() {
+        return planName;
+    }
+
+    public void setPlanName(String planName) {
+        this.planName = planName;
+    }
+
+    public String getItemName() {
+        return itemName;
+    }
+
+    public void setItemName(String itemName) {
+        this.itemName = itemName;
     }
 
 }

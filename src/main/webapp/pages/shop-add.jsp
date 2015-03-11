@@ -19,6 +19,7 @@
 <link rel="icon" type="image/png" href="assets/i/logo.jpg">
 <link rel="stylesheet" href="assets/css/amazeui.min.css" />
 <link rel="stylesheet" href="assets/css/admin.css">
+<link rel="stylesheet" href="assets/css/cis.css">
 <link rel="stylesheet" href="assets/css/amazeui.datetimepicker.css" />
 
 <script src="assets/js/jquery-1.11.2.min.js"></script>
@@ -27,39 +28,7 @@
 <script src="assets/js/cis.js"></script>
 <script>
 $(function(){
-	//文本框只能输入数字，并屏蔽输入法和粘贴  
-	$.fn.numeral = function() {     
-    	$(this).css("ime-mode", "disabled");     
-        this.bind("keypress",function(e) {     
-	        var code = (e.keyCode ? e.keyCode : e.which);  //兼容火狐 IE      
-	        if(!$.browser.msie&&(e.keyCode==0x8))  //火狐下不能使用退格键     
-	        {     
-	        	return ;     
-	        }     
-	        return code >= 48 && code<= 57;     
-        });     
-        this.bind("blur", function() {     
-        	if (this.value.lastIndexOf(".") == (this.value.length - 1)) {     
-            	this.value = this.value.substr(0, this.value.length - 1);     
-            } else if (isNaN(this.value)) {     
-                this.value = "";     
-            }     
-        });     
-        this.bind("paste", function() {     
-            var s = clipboardData.getData('text');     
-            if (!/\D/.test(s));     
-            value = s.replace(/^0*/, '');     
-            return false;     
-        });     
-        this.bind("dragenter", function() {     
-            return false;     
-        });     
-        this.bind("keyup", function() {     
-        	if (/(^0+)/.test(this.value)) {     
-            	this.value = this.value.replace(/^0*/, '');     
-            }     
-        });     
-    };    
+	  
     //调用文本框的id  
 	$("#hours").numeral();
 	
@@ -71,60 +40,73 @@ $(function(){
         $("[name='customer-id']").each(function(){ 
             if($(this).is(":checked")){
             	val = $(this).val(); 
+            	customerName = $(this).parent().next().text();
             }
         }); 
 
         $("[name='shopVO.customerId']").val(val);
+        $("#customer-name").val(customerName);
     }); 
 
   	//获取美容师
     $("#employee-getValue").click(function(){
         var val;
+        var employeeName;
         $("[name='employee-id']").each(function(){ 
             if($(this).is(":checked")){
             	val = $(this).val(); 
+            	employeeName = $(this).parent().next().text();
             }
         }); 
 
         $("[name='shopVO.employeeId']").val(val);
+        $("#employee-name").val(employeeName);
     });
 
   	//获取活动
     $("#activity-getValue").click(function(){
         var val;
+        var activityName;
         $("[name='activity-id']").each(function(){ 
             if($(this).is(":checked")){
             	val = $(this).val(); 
+            	activityName = $(this).parent().next().text();
             }
         }); 
-        alert("活动id："+val); 
+        //alert("活动id："+val); 
 
         $("[name='shopVO.activityId']").val(val);
-        alert($("[name='shopVO.activityId']").val());
+        $("#activity-name").val(activityName);
     });
 
   	//获取方案
     $("#plan-getValue").click(function(){
         var val;
+        var planName;
         $("[name='plan-id']").each(function(){ 
             if($(this).is(":checked")){
             	val = $(this).val(); 
+            	planName = $(this).parent().next().text();
             }
         }); 
 
         $("[name='shopVO.planId']").val(val);
+        $("#plan-name").val(planName);
     });
 
   	//获取项目
     $("#item-getValue").click(function(){
         var val;
+        var itemName;
         $("[name='item-id']").each(function(){ 
             if($(this).is(":checked")){
             	val = $(this).val(); 
+            	itemName = $(this).parent().next().text();
             }
         }); 
 
         $("[name='shopVO.itemId']").val(val);
+        $("#item-name").val(itemName);
     });
 
     $('#datetimepicker-arrivalTime').datetimepicker({
@@ -178,7 +160,7 @@ $(function(){
 			          		<input type="text" class="am-form-field am-input-sm" id="customer-name" readonly>
 			          	</div>
 						<label class="am-u-sm-1 am-form-label">
-			          		<span class="am-input-group-label" style="background-color:#ffffff;border: 0px solid #cccccc;color:red;">
+			          		<span class="am-input-group-label select_label">
 			          			<a href="#" data-am-modal="{target: '#my-customer'}"><i class="am-icon-search-plus"></i></a>* 必选
 			          		</span>
 			          	</label>
@@ -190,7 +172,7 @@ $(function(){
 							<input type="text" class="am-form-field am-input-sm" id="employee-name" readonly>
 			          	</div>
 						<label class="am-u-sm-1 am-form-label">
-			          		<span class="am-input-group-label" style="background-color:#ffffff;border: 0px solid #cccccc;color:red;">
+			          		<span class="am-input-group-label select_label">
 			          			<a href="#" data-am-modal="{target: '#my-employee'}"><i class="am-icon-search-plus"></i></a>* 必选
 			          		</span>
 			          	</label>
@@ -199,7 +181,7 @@ $(function(){
 							<input type="text" class="am-form-field am-input-sm" id="item-name" readonly>
 						</div>
 						<label class="am-u-sm-1 am-form-label">
-			          		<span class="am-input-group-label" style="background-color:#ffffff;border: 0px solid #cccccc;color:red;">
+			          		<span class="am-input-group-label select_label">
 			          			<a href="#" data-am-modal="{target: '#my-item'}"><i class="am-icon-search-plus"></i></a>* 必选
 			          		</span>
 			          	</label>
@@ -238,18 +220,18 @@ $(function(){
 			        <div class="am-g am-form-group">
 						<label for="shop-activity" class="am-u-sm-2 am-form-label">活动</label>
 						<div class="am-u-sm-3">
-			            	<label class="am-form-label" style="font-weight:normal;">
-			            		<a href="#" data-am-modal="{target: '#my-activity'}"><span class="am-icon-search-plus" /></a>
-			            	</label> 
+			            	<input type="text" class="am-form-field am-input-sm" id="activity-name" readonly>
 			          	</div>
-						<label class="am-u-sm-1 am-form-label">&nbsp;</label>
+						<label class="am-u-sm-1 am-form-label">
+							<a href="#" data-am-modal="{target: '#my-activity'}"><i class="am-icon-search-plus"></i></a>
+						</label>
 						<label for="shop-plan" class="am-u-sm-2 am-form-label">方案</label>
 						<div class="am-u-sm-3">
-							<label class="am-form-label" style="font-weight:normal;">
-			            		<a href="#" data-am-modal="{target: '#my-plan'}"><span class="am-icon-search-plus" /></a>
-			            	</label> 
+			            	<input type="text" class="am-form-field am-input-sm" id="plan-name" readonly>
 						</div>
-						<label class="am-u-sm-1 am-form-label">&nbsp;</label>
+						<label class="am-u-sm-1 am-form-label">
+							<a href="#" data-am-modal="{target: '#my-plan'}"><i class="am-icon-search-plus"></i></a>
+						</label>
 					</div>
 			        
 					<div class="am-popup" id="my-customer">

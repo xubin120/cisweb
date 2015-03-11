@@ -17,9 +17,10 @@
 <meta http-equiv="expires" content="0">  
 
 <link rel="icon" type="image/png" href="assets/i/logo.jpg">
-<link rel="stylesheet" href="assets/css/amazeui.datetimepicker.css" />
 <link rel="stylesheet" href="assets/css/amazeui.min.css" />
 <link rel="stylesheet" href="assets/css/admin.css">
+<link rel="stylesheet" href="assets/css/cis.css">
+<link rel="stylesheet" href="assets/css/amazeui.datetimepicker.css" />
 
 <script src="assets/js/jquery-1.11.2.min.js"></script>
 <script src="assets/js/amazeui.min.js"></script>
@@ -155,7 +156,7 @@ $(function(){
 			          		<input type="text" class="am-form-field am-input-sm" id="customer-name" readonly>
 			          	</div>
 			          	<label class="am-u-sm-1 am-form-label">
-			          		<span class="am-input-group-label" style="background-color:#ffffff;border: 0px solid #cccccc;color:red;">
+			          		<span class="am-input-group-label select_label">
 			          			<a href="#" data-am-modal="{target: '#my-popup'}"><i class="am-icon-search-plus"></i></a>* 必选
 			          		</span>
 			          	</label>
