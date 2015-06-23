@@ -35,6 +35,7 @@ public class ReservationAction extends ActionSupport {
     private PageInfo pi;
     private int currentPage = 1;
     private String reservationId;
+    private String customerName;
 
     @Autowired
     private ReservationDao reservationDao;
@@ -87,10 +88,25 @@ public class ReservationAction extends ActionSupport {
         if (customerList != null) {
             pi = new PageInfo(customerList);
         }
+        
+        CustomerVO customerVO = customerDao.findById(Integer.valueOf(reservationVO.getCustomerId()));
+        setCustomerName(customerVO.getName());
         return SUCCESS;
     }
 
     public String edit() throws Exception {
+        
+        if (StringUtil.isEmpty(reservationVO.getShopTime())) {
+            reservationVO.setShopTime(null);
+        }
+        
+        if (StringUtil.isEmpty(reservationVO.getAntiShopTime())) {
+            reservationVO.setAntiShopTime(null);
+        }
+        
+        if (StringUtil.isEmpty(reservationVO.getAntiShopRemindTime())) {
+            reservationVO.setAntiShopRemindTime(null);
+        }
         
         int i = reservationDao.updateReservation(reservationVO);
 
@@ -163,6 +179,14 @@ public class ReservationAction extends ActionSupport {
 
     public void setReservationId(String reservationId) {
         this.reservationId = reservationId;
+    }
+
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
     }
 
 }
